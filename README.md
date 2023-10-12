@@ -12,7 +12,7 @@ This app supports actions for Cofense Triage's version 2 API for faster bidirect
 
 [comment]: # " File: readme.md"
 [comment]: # ""
-[comment]: # "    Copyright (c) 2021 Cofense"
+[comment]: # "    Copyright (c) 2021-2023 Cofense"
 [comment]: # ""
 [comment]: # "    This unpublished material is proprietary to Cofense."
 [comment]: # "    All rights reserved. The methods and"

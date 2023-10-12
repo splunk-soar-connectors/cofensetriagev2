@@ -10,7 +10,7 @@
 {% block widget_content %} <!-- Main Start Block -->
 
 <!-- File: cofensetriagev2_get_report.html
-    Copyright (c) 2021 Cofense
+    Copyright (c) 2021-2023 Cofense
 
     This unpublished material is proprietary to Cofense.
     All rights reserved. The methods and
@@ -285,6 +285,6 @@
         }
     });
     $.fn.DataTable.ext.pager.numbers_length = 5;
-    $('.datatable').DataTable();
+    $('.datatable').DataTable({order: []});
 </script>
 {% endblock %} <!-- Main Start Block -->

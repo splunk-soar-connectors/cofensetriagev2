@@ -1,6 +1,6 @@
 # File: cofensetriagev2_consts.py
 #
-# Copyright (c) 2021 Cofense
+# Copyright (c) 2021-2023 Cofense
 #
 # This unpublished material is proprietary to Cofense.
 # All rights reserved. The methods and
@@ -14,8 +14,11 @@
 COFENSE_OAUTH_TOKEN_STRING = "token"
 COFENSE_OAUTH_ACCESS_TOKEN_STRING = "access_token"
 COFENSE_ERROR_CODE_MESSAGE = "Error code unavailable"
+COFENSE_REPORTS_NOTFOUND_CODE = 404
+ERR_MSG_UNAVAILABLE = "Error message unavailable. Please check the asset configuration and|or action parameters"
 COFENSE_ERROR_MESSAGE = "Unknown error occurred. Please check the asset configuration and|or action parameters"
-COFENSE_STATE_FILE_CORRUPT_ERROR = "Error occurred while loading the state file due to its unexpected format. Resetting the state file with the default format. Please try again"
+COFENSE_STATE_FILE_CORRUPT_ERROR = "Error occurred while loading the state file due to its unexpected format.\
+      Resetting the state file with the default format. Please try again"
 
 PHANTOM_VAULT_DIR = '/opt/phantom/vault/tmp/'
 
@@ -23,6 +26,9 @@ COFENSE_TRIAGE_STATUS_ENDPOINT = "/api/public/v2/system/status"
 COFENSE_TRIAGE_TOKEN_ENDPOINT = "/oauth/token"
 
 COFENSE_REPORTS_ENDPOINT = "/api/public/v2/reports"
+COFENSE_CATEGORY_REPORTS_ENDPOINT = "/api/public/v2/categories/{category_id}/reports"
+COFENSE_REPORTER_REPORTS_ENDPOINT = "/api/public/v2/reporters/{reporter_id}/reports"
+
 COFENSE_REPORT_ENDPOINT = "/api/public/v2/reports/{report_id}"
 COFENSE_REPORTERS_ENDPOINT = "/api/public/v2/reporters"
 COFENSE_CATEGORIZE_REPORT_ENDPOINT = "/api/public/v2/reports/{report_id}/categorize"
