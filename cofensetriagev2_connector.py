@@ -11,21 +11,22 @@
 #
 # Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+import json
+import tempfile
+
+import dateutil.parser
 # Phantom App imports
 import phantom.app as phantom
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
-from phantom.vault import Vault
 import phantom.rules as ph_rules
 import phantom.utils as ph_utils
-
-from cofensetriagev2_consts import *
 import requests
-import json
 from bs4 import BeautifulSoup
+from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
+from phantom.vault import Vault
+
 import default_timezones
-import dateutil.parser
-import tempfile
+from cofensetriagev2_consts import *
 
 
 class RetVal(tuple):
@@ -2509,9 +2510,10 @@ class CofenseTriageConnector(BaseConnector):
 
 
 def main():
-    import pudb
     import argparse
     import sys
+
+    import pudb
 
     pudb.set_trace()
 
