@@ -2470,7 +2470,7 @@ class CofenseTriageConnector(BaseConnector):
             self._state = {
                 "app_version": self.get_app_json().get('app_version')
             }
-            return self.set_status(phantom.APP_ERROR, COFENSE_STATE_FILE_CORRUPT_ERROR)
+            return self.set_status(phantom.APP_ERROR, COFENSE_STATE_FILE_CORRUPT_ERR)
 
         # get the asset config
         config = self.get_config()

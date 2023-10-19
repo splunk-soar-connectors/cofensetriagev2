@@ -13,11 +13,9 @@
 
 COFENSE_OAUTH_TOKEN_STRING = "token"
 COFENSE_OAUTH_ACCESS_TOKEN_STRING = "access_token"
-COFENSE_ERROR_CODE_MESSAGE = "Error code unavailable"
 COFENSE_REPORTS_NOTFOUND_CODE = 404
 ERR_MSG_UNAVAILABLE = "Error message unavailable. Please check the asset configuration and|or action parameters"
-COFENSE_ERROR_MESSAGE = "Unknown error occurred. Please check the asset configuration and|or action parameters"
-COFENSE_STATE_FILE_CORRUPT_ERROR = "Error occurred while loading the state file due to its unexpected format.\
+COFENSE_STATE_FILE_CORRUPT_ERR = "Error occurred while loading the state file due to its unexpected format.\
       Resetting the state file with the default format. Please try again"
 
 PHANTOM_VAULT_DIR = '/opt/phantom/vault/tmp/'
