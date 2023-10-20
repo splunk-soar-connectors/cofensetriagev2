@@ -1002,37 +1002,51 @@
                 {
                     "data_path": "action_result.data.*.attributes.urls_count",
                     "data_type": "numeric",
-                    "example_value": 12
+                    "example_values": [
+                        12
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.attributes.rules_count",
                     "data_type": "numeric",
-                    "example_value": 2
+                    "example_values": [
+                        2
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.attributes.comments_count",
                     "data_type": "numeric",
-                    "example_value": 1
+                    "example_values": [
+                        1
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.attributes.attachments_count",
                     "data_type": "numeric",
-                    "example_value": 0
+                    "example_values": [
+                        0
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.attributes.first_processed_at",
                     "data_type": "string",
-                    "example_value": "2022-03-01T07:14:34.040Z"
+                    "example_values": [
+                        "2022-03-01T07:14:34.040Z"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.relationships.domains.links.self",
                     "data_type": "string",
-                    "example_value": "https://test.testcloud.com/api/public/v2/reports/1/relationships/domains"
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/relationships/domains"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.relationships.domains.links.related",
                     "data_type": "string",
-                    "example_value": "https://test.testcloud.com/api/public/v2/reports/1/domains"
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/domains"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.relationships.assignee.data",
@@ -1041,42 +1055,58 @@
                 {
                     "data_path": "action_result.data.*.relationships.comments.links.self",
                     "data_type": "string",
-                    "example_value": "https://test.testcloud.com/api/public/v2/reports/1/relationships/comments"
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/relationships/comments"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.relationships.comments.links.related",
                     "data_type": "string",
-                    "example_value": "https://test.testcloud.com/api/public/v2/reports/1/comments"
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/comments"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.relationships.processed_by.data.id",
                     "data_type": "string",
-                    "example_value": "1"
+                    "example_values": [
+                        "1"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.relationships.processed_by.data.type",
                     "data_type": "string",
-                    "example_value": "api_applications"
+                    "example_values": [
+                        "api_applications"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.relationships.processed_by.links.self",
                     "data_type": "string",
-                    "example_value": "https://test.testcloud.com/api/public/v2/reports/1/relationships/processed_by"
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/relationships/processed_by"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.relationships.processed_by.links.related",
                     "data_type": "string",
-                    "example_value": "https://test.testcloud.com/api/public/v2/reports/1/processed_by"
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/processed_by"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.relationships.cofense_intelligence_indicators.links.self",
                     "data_type": "string",
-                    "example_value": "https://test.testcloud.com/api/public/v2/reports/1/relationships/cofense_intelligence_indicators"
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/relationships/cofense_intelligence_indicators"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.relationships.cofense_intelligence_indicators.links.related",
                     "data_type": "string",
-                    "example_value": "https://test.testcloud.com/api/public/v2/reports/1/cofense_intelligence_indicators"
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/cofense_intelligence_indicators"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.relationships.processed_by.data",
