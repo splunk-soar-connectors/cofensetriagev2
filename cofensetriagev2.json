@@ -10,13 +10,14 @@
     "python_version": "3",
     "product_version_regex": ".*",
     "publisher": "Cofense",
-    "license": "Copyright (c) 2021 Cofense",
-    "app_version": "1.0.3",
-    "utctime_updated": "2021-08-09T11:10:51.000000Z",
+    "license": "Copyright (c) 2021-2023 Cofense",
+    "app_version": "1.1.0",
+    "utctime_updated": "2022-01-07T21:57:26.000000Z",
     "package_name": "phantom_cofensetriagev2",
     "main_module": "cofensetriagev2_connector.py",
-    "min_phantom_version": "4.9.39220",
+    "min_phantom_version": "6.0.0",
     "app_wizard_version": "1.0.0",
+    "fips_cpmpliant": false,
     "configuration": {
         "base_url": {
             "description": "Server URL",
@@ -167,7 +168,7 @@
         {
             "action": "get reports",
             "description": "Retrieve reports from the Cofense Triage Platform filtered based on the provided parameters",
-            "verbose": "If the 'ingest_subfields' parameter is true, the report and the subfields together will get ingested into the container. If no value is provided in any parameter, then all the records will be retrieved.",
+            "verbose": "If the 'ingest_subfields' parameter is true, the report and the subfields together will get ingested into the container. If no value is provided in any parameter, then all the records will be retrieved. If reporter_id and category_id both are provided then reports will be fetched based on category_id.",
             "type": "investigate",
             "identifier": "get_reports",
             "read_only": true,
@@ -997,6 +998,127 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*.attributes.urls_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        12
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.attributes.rules_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.attributes.comments_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.attributes.attachments_count",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.attributes.first_processed_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2022-03-01T07:14:34.040Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.relationships.domains.links.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/relationships/domains"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.relationships.domains.links.related",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/domains"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.relationships.assignee.data",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.relationships.comments.links.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/relationships/comments"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.relationships.comments.links.related",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/comments"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.relationships.processed_by.data.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.relationships.processed_by.data.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "api_applications"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.relationships.processed_by.links.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/relationships/processed_by"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.relationships.processed_by.links.related",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/processed_by"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.relationships.cofense_intelligence_indicators.links.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/relationships/cofense_intelligence_indicators"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.relationships.cofense_intelligence_indicators.links.related",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://test.testcloud.com/api/public/v2/reports/1/cofense_intelligence_indicators"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.relationships.processed_by.data",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.relationships.cluster.data",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.relationships.category.data",
+                    "data_type": "string"
                 }
             ],
             "render": {
@@ -3040,7 +3162,7 @@
                 },
                 {
                     "data_path": "action_result.parameter.ingest_threat_indicator",
-                    "data_type": "string",
+                    "data_type": "boolean",
                     "example_values": [
                         false,
                         true
@@ -3048,7 +3170,7 @@
                 },
                 {
                     "data_path": "action_result.parameter.ingest_subfields",
-                    "data_type": "string",
+                    "data_type": "boolean",
                     "example_values": [
                         false,
                         true
@@ -3074,7 +3196,7 @@
                 },
                 {
                     "data_path": "action_result.parameter.max_results",
-                    "data_type": "string",
+                    "data_type": "numeric",
                     "example_values": [
                         100
                     ]
@@ -7526,23 +7648,67 @@
             "parameters": {
                 "container_count": {
                     "description": "Maximum number of containers to ingest",
-                    "data_type": "numeric"
+                    "data_type": "numeric",
+                    "order": 0
                 },
                 "start_time": {
                     "data_type": "numeric",
-                    "description": "Parameter ignored in this app"
+                    "description": "Parameter ignored in this app",
+                    "order": 1
                 },
                 "end_time": {
                     "data_type": "numeric",
-                    "description": "Parameter ignored in this app"
+                    "description": "Parameter ignored in this app",
+                    "order": 2
                 },
                 "artifact_count": {
                     "data_type": "numeric",
-                    "description": "Parameter ignored in this app"
+                    "description": "Parameter ignored in this app",
+                    "order": 3
                 }
             },
             "output": [],
             "versions": "EQ(*)"
         }
-    ]
+    ],
+    "pip_dependencies": {
+        "wheel": [
+            {
+                "module": "beautifulsoup4",
+                "input_file": "wheels/py3/beautifulsoup4-4.9.1-py3-none-any.whl"
+            },
+            {
+                "module": "python_dateutil",
+                "input_file": "wheels/shared/python_dateutil-2.8.1-py2.py3-none-any.whl"
+            },
+            {
+                "module": "six",
+                "input_file": "wheels/shared/six-1.16.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "soupsieve",
+                "input_file": "wheels/py3/soupsieve-2.3.2.post1-py3-none-any.whl"
+            }
+        ]
+    },
+    "pip39_dependencies": {
+        "wheel": [
+            {
+                "module": "beautifulsoup4",
+                "input_file": "wheels/py3/beautifulsoup4-4.9.1-py3-none-any.whl"
+            },
+            {
+                "module": "python_dateutil",
+                "input_file": "wheels/shared/python_dateutil-2.8.1-py2.py3-none-any.whl"
+            },
+            {
+                "module": "six",
+                "input_file": "wheels/shared/six-1.16.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "soupsieve",
+                "input_file": "wheels/py3/soupsieve-2.5-py3-none-any.whl"
+            }
+        ]
+    }
 }
