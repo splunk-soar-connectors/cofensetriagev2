@@ -1,6 +1,6 @@
 # File: cofensetriagev2_connector.py
 #
-# Copyright (c) 2021 Cofense
+# Copyright (c) 2021-2023 Cofense
 #
 # This unpublished material is proprietary to Cofense.
 # All rights reserved. The methods and
@@ -11,21 +11,22 @@
 #
 # Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+import json
+import tempfile
+
+import dateutil.parser
 # Phantom App imports
 import phantom.app as phantom
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
-from phantom.vault import Vault
 import phantom.rules as ph_rules
 import phantom.utils as ph_utils
-
-from cofensetriagev2_consts import *
 import requests
-import json
 from bs4 import BeautifulSoup
+from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
+from phantom.vault import Vault
+
 import default_timezones
-import dateutil.parser
-import tempfile
+from cofensetriagev2_consts import *
 
 
 class RetVal(tuple):
@@ -37,7 +38,8 @@ class RetVal(tuple):
 
 
 class CofenseTriageConnector(BaseConnector):
-    """Represent a connector module that implements the actions that are provided by the app. CofenseTriageConnector is a class that is derived from the BaseConnector class."""
+    """Represent a connector module that implements the actions that are provided by the app.\
+        CofenseTriageConnector is a class that is derived from the BaseConnector class."""
 
     def __init__(self):
         """Initialize global variables."""
@@ -59,38 +61,64 @@ class CofenseTriageConnector(BaseConnector):
         self._remaining = None
 
     def _process_empty_response(self, response, action_result):
+        """
+        Process empty resonse
+
+        Args:
+            response: REST call response object
+            action_result: object of ActionResult class
+
+        Returns:
+            status phantom.APP_ERROR/phantom.APP_SUCCESS(along with appropriate message),
+        response obtained from an API call
+        """
         if response.status_code in [200, 204]:
             return RetVal(phantom.APP_SUCCESS, {})
 
         return RetVal(
             action_result.set_status(
-                phantom.APP_ERROR, "Status Code: {0}. Empty response and no information in the header".format(response.status_code)
-            ), None
-        )
+                phantom.APP_ERROR, "Status Code: {0}. Empty response and no information in the header".format(response.status_code)), None)
 
     def _get_error_message_from_exception(self, e):
         """
         Get appropriate error message from the exception.
-
-        :param e: exception object
+        :param e: Exception object
         :return: error message
         """
-        error_msg = COFENSE_ERROR_MESSAGE
-        error_code = COFENSE_ERROR_CODE_MESSAGE
+        error_code = None
+        err_msg = ERR_MSG_UNAVAILABLE
+
+        self.error_print("Error occurred.", e)
+
         try:
             if hasattr(e, "args"):
                 if len(e.args) > 1:
                     error_code = e.args[0]
-                    error_msg = e.args[1]
+                    err_msg = e.args[1]
                 elif len(e.args) == 1:
-                    error_code = COFENSE_ERROR_CODE_MESSAGE
-                    error_msg = e.args[0]
-        except:
-            pass
+                    err_msg = e.args[0]
+        except Exception as e:
+            self.error_print("Error occurred while fetching exception information. Details: {}".format(str(e)))
 
-        return "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
+        if not error_code:
+            error_text = "Error Message: {}".format(err_msg)
+        else:
+            error_text = "Error Code: {}. Error Message: {}".format(error_code, err_msg)
+
+        return error_text
 
     def _process_html_response(self, response, action_result):
+        """
+        Process HTML resonse
+
+        Args:
+            response: REST call response
+            action_result: object of ActionResult class
+
+        Returns:
+            status phantom.APP_ERROR/phantom.APP_SUCCESS(along with appropriate message),
+        response obtained from an API call
+        """
         # An html response, treat it like an error
         status_code = response.status_code
 
@@ -103,15 +131,26 @@ class CofenseTriageConnector(BaseConnector):
             split_lines = error_text.split('\n')
             split_lines = [x.strip() for x in split_lines if x.strip()]
             error_text = '\n'.join(split_lines)
-        except:
+        except Exception as e:
+            self.debug_print(self._get_error_message_from_exception(e))
             error_text = "Cannot parse error details"
 
         message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code, error_text)
-
         message = message.replace('{', '{{').replace('}', '}}')
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
     def _process_json_response(self, r, action_result):
+        """
+        Process JSON resonse
+
+        Args:
+            r: REST call response
+            action_result: object of ActionResult class
+
+        Returns:
+            status phantom.APP_ERROR/phantom.APP_SUCCESS(along with appropriate message),
+        response obtained from an API call
+        """
         # Try a json parse
         try:
             resp_json = r.json()
@@ -119,9 +158,7 @@ class CofenseTriageConnector(BaseConnector):
             msg = self._get_error_message_from_exception(e)
             return RetVal(
                 action_result.set_status(
-                    phantom.APP_ERROR, "Unable to parse JSON response. Error: {0}".format(msg)
-                ), None
-            )
+                    phantom.APP_ERROR, "Unable to parse JSON response. Error: {0}".format(msg)), None)
 
         # Please specify the status codes here
         if 200 <= r.status_code < 399:
@@ -130,21 +167,37 @@ class CofenseTriageConnector(BaseConnector):
         # You should process the error returned in the json
         message = "Error from server. Status Code: {0} Data from server: {1}".format(
             r.status_code,
-            r.text.replace('{', '{{').replace('}', '}}')
-        )
+            r.text.replace('{', '{{').replace('}', '}}'))
 
         if "errors" in resp_json and resp_json.get("errors", []):
+            # Handling the 404 status code for list_reports action
+            if r.status_code == COFENSE_REPORTS_NOTFOUND_CODE and resp_json.get("errors")[0].get("title") == "Record not found":
+                message = "Message from server: {0}".format(
+                    resp_json.get("errors")[0].get("detail", r.text.replace('{', '{{').replace('}', '}}')))
+                return RetVal(
+                    action_result.set_status(phantom.APP_SUCCESS, message), resp_json)
             message = "Error from server. Status Code: {0} Data from server: {1}".format(
                 r.status_code,
-                resp_json.get("errors")[0].get("detail", r.text.replace('{', '{{').replace('}', '}}'))
-            )
+                resp_json.get("errors")[0].get("detail", r.text.replace('{', '{{').replace('}', '}}')))
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
     def _process_response(self, r, action_result):
+        """
+        Process resonse of REST call
 
+        Args:
+            r: REST call response object
+            action_result: object of ActionResult class
+
+        Returns:
+            status phantom.APP_ERROR/phantom.APP_SUCCESS(along with appropriate message),
+        response obtained by making an API call
+        """
         # preempt adding binary downloads to debug data
-        if int(r.status_code) == 200 and (r.headers.get('Content-Transfer-Encoding') == "binary" or r.headers.get('Content-Type') == "application/octet-stream"):
+        if int(r.status_code) == 200 \
+            and (
+                r.headers.get('Content-Transfer-Encoding') == "binary" or r.headers.get('Content-Type') == "application/octet-stream"):
             return RetVal(phantom.APP_SUCCESS, r.content)
 
         # store the r_text in debug data, it will get dumped in the logs if the action fails
@@ -173,8 +226,7 @@ class CofenseTriageConnector(BaseConnector):
         # everything else is actually an error at this point
         message = "Can't process response from server. Status Code: {0} Data from server: {1}".format(
             r.status_code,
-            r.text.replace('{', '{{').replace('}', '}}')
-        )
+            r.text.replace('{', '{{').replace('}', '}}'))
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
@@ -203,7 +255,8 @@ class CofenseTriageConnector(BaseConnector):
             r = request_func(url, json=json, data=data, headers=headers, params=params, verify=self._verify)
             self._r = r
         except Exception as e:
-            return action_result.set_status(phantom.APP_ERROR, "Error connecting to server. Details: {0}".format(self._get_error_message_from_exception(e))), resp_json
+            return action_result.set_status(
+                phantom.APP_ERROR, "Error connecting to server. Details: {0}".format(self._get_error_message_from_exception(e))), resp_json
 
         return self._process_response(r, action_result)
 
@@ -271,7 +324,7 @@ class CofenseTriageConnector(BaseConnector):
                     return action_result.set_status(phantom.APP_ERROR, COFENSE_INVALID_INTEGER_ERR_MSG.format(key)), None
 
                 parameter = int(parameter)
-            except:
+            except Exception:
                 return action_result.set_status(phantom.APP_ERROR, COFENSE_INVALID_INTEGER_ERR_MSG.format(key)), None
 
             if parameter < 0:
@@ -301,7 +354,7 @@ class CofenseTriageConnector(BaseConnector):
             dt = dateutil.parser.parse(datestring.upper(), tzinfos=tzinfos, default=default_time)
             dt.astimezone(dateutil.tz.tzutc())
             return phantom.APP_SUCCESS
-        except:
+        except Exception:
             msg = COFENSE_INVALID_PARAMETER.format(key)
             return action_result.set_status(phantom.APP_ERROR, msg)
 
@@ -316,7 +369,7 @@ class CofenseTriageConnector(BaseConnector):
         try:
             r = requests.get(url, verify=False)
             response = r.json()
-        except:
+        except Exception:
             return action_result.set_status(phantom.APP_ERROR, "Error: failed to get user_info"), None
 
         if r.status_code != 200:
@@ -369,30 +422,7 @@ class CofenseTriageConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_ERROR, COFENSE_INVALID_PARAMETER.format(COFENSE_TENANT_STRING)), None
 
-    def _filter_data(self, response, category_id, reporter_id):
-        """
-        Filter the data based on the parameters.
-
-        :param response: API response
-        :param category_id: category ID of the report to filter on
-        :param reporter_id: reporter ID of the report to filter on
-        :return: filtered data
-        """
-        data = list()
-        for item in response.get("data", []):
-            cdata = item.get("relationships", {}).get("category", {}).get("data")
-            rdata = item.get("relationships", {}).get("reporter", {}).get("data")
-            if category_id and reporter_id:
-                if cdata and rdata and cdata.get("id") == str(category_id) and rdata.get("id") == str(reporter_id):
-                    data.append(item)
-            elif category_id:
-                if cdata and cdata.get("id") == str(category_id):
-                    data.append(item)
-            elif reporter_id and rdata and rdata.get("id") == str(reporter_id):
-                data.append(item)
-        return data
-
-    def _paginator(self, action_result, endpoint, params=None, max_results=0, category_id=None, reporter_id=None):
+    def _paginator(self, action_result, endpoint, params=None, max_results=0):
         """
         Fetch results from multiple API calls using pagination for given endpoint.
 
@@ -400,29 +430,32 @@ class CofenseTriageConnector(BaseConnector):
         :param endpoint: REST endpoint that needs to be appended to the service address
         :param params: request parameters
         :param max_results: maximum number of results to return
-        :param category_id: category ID of the report to filter on
-        :param reporter_id: reporter ID of the report to filter on
         :return: status phantom.APP_ERROR/phantom.APP_SUCCESS, results
         """
         if not isinstance(params, dict):
             params = dict()
         data = list()
-        params["page[size]"] = 200
+        page_size = 200
         page = 1
+
+        if max_results and max_results < 200:
+            page_size = max_results
+
         while True:
             params["page[number]"] = page
+            params["page[size]"] = page_size
             status, response = self._make_rest_call_helper_oauth2(action_result, endpoint, params=params)
             if phantom.is_fail(status):
                 return action_result.get_status(), data
-            if category_id or reporter_id:
-                data.extend(self._filter_data(response, category_id, reporter_id))
-            else:
-                data.extend(response.get("data", []))
-            if max_results and len(data) >= max_results:
+            data.extend(response.get("data", []))
+            total_data = len(data)
+            if max_results and total_data >= max_results:
                 return phantom.APP_SUCCESS, data[:max_results]
             if not response.get("links", {}).get("next"):
                 break
             page += 1
+            if max_results:
+                page_size = min(max_results - total_data, 200)
 
         self._less_data = True
         return phantom.APP_SUCCESS, data
@@ -692,7 +725,7 @@ class CofenseTriageConnector(BaseConnector):
         if cef_mapping:
             try:
                 cef_mapping = json.loads(cef_mapping)
-            except:
+            except Exception:
                 msg = COFENSE_INVALID_JSON_PARAMETER.format("'cef_mapping'")
                 return action_result.set_status(phantom.APP_ERROR, msg), label, tenant, cef_mapping
 
@@ -934,6 +967,12 @@ class CofenseTriageConnector(BaseConnector):
         cef_mapping = processed_params.get("cef_mapping")
         ingest = processed_params.get("ingest")
 
+        endpoint = COFENSE_REPORTS_ENDPOINT
+        if reporter_id or reporter_id == 0:
+            endpoint = COFENSE_REPORTER_REPORTS_ENDPOINT.format(reporter_id=str(reporter_id))
+        if category_id or category_id == 0:
+            endpoint = COFENSE_CATEGORY_REPORTS_ENDPOINT.format(category_id=str(category_id))
+
         total_ingested = 0
         limit = max_results
         is_scheduled_poll = self._is_on_poll and not self._is_poll_now
@@ -942,7 +981,7 @@ class CofenseTriageConnector(BaseConnector):
             self.save_progress(COFENSE_RETRIEVING_DATA_MSG.format("reports"))
             self.debug_print(COFENSE_RETRIEVING_DATA_MSG.format("reports"))
             # Fetch the data
-            status, reports = self._paginator(action_result, COFENSE_REPORTS_ENDPOINT, params, max_results, category_id, reporter_id)
+            status, reports = self._paginator(action_result, endpoint, params, max_results)
             if phantom.is_fail(status):
                 return action_result.get_status(), reports
 
@@ -951,7 +990,8 @@ class CofenseTriageConnector(BaseConnector):
 
             # Ingest the data
             if ingest:
-                self._ingest_data(action_result, ingest_subfields, reports, label, tenant, cef_mapping, "report", COFENSE_REPORT_LAST_INGESTED_DATE_STRING)
+                self._ingest_data(
+                    action_result, ingest_subfields, reports, label, tenant, cef_mapping, "report", COFENSE_REPORT_LAST_INGESTED_DATE_STRING)
 
             if is_scheduled_poll:
                 date_string = COFENSE_REPORT_LAST_INGESTED_DATE_STRING
@@ -1027,6 +1067,12 @@ class CofenseTriageConnector(BaseConnector):
         return phantom.APP_SUCCESS
 
     def _handle_categorize_report(self, param):
+        """
+        Categorize a report into the provided category from Cofense Triage Platform.
+
+        :param param: Dictionary of input parameters
+        :return: status(phantom.APP_SUCCESS/phantom.APP_ERROR)
+        """
         self.save_progress(COFENSE_ACTION_HANDLER_MSG.format(self.get_action_identifier()))
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
@@ -1116,6 +1162,9 @@ class CofenseTriageConnector(BaseConnector):
             return action_result.get_status()
 
         if not reports:
+            msg = action_result.get_message()
+            if "not be found" in msg:
+                return action_result.get_status()
             return action_result.set_status(phantom.APP_SUCCESS, "No reports found")
 
         for report in reports:
@@ -1163,7 +1212,8 @@ class CofenseTriageConnector(BaseConnector):
 
         # Ingest the data
         if ingest or ingest_subfields:
-            self._ingest_data(action_result, ingest_subfields, [report], label, tenant, cef_mapping, "report", COFENSE_REPORT_LAST_INGESTED_DATE_STRING)
+            self._ingest_data(
+                action_result, ingest_subfields, [report], label, tenant, cef_mapping, "report", COFENSE_REPORT_LAST_INGESTED_DATE_STRING)
 
         return action_result.set_status(phantom.APP_SUCCESS, "Successfully retrieved the report")
 
@@ -1181,11 +1231,12 @@ class CofenseTriageConnector(BaseConnector):
             if rscore:
                 try:
                     if not float(rscore).is_integer():
-                        return action_result.set_status(phantom.APP_ERROR, COFENSE_INVALID_INTEGER_LIST_ERR_MSG.format("'reputation_score'")), None
+                        return action_result.set_status(phantom.APP_ERROR, COFENSE_INVALID_INTEGER_LIST_ERR_MSG.format("'reputation_score'")),\
+                            None
 
                     rscore = int(rscore)
                     rscores.append(str(rscore))
-                except:
+                except Exception:
                     return action_result.set_status(phantom.APP_ERROR, COFENSE_INVALID_INTEGER_LIST_ERR_MSG.format("'reputation_score'")), None
 
         return phantom.APP_SUCCESS, ",".join(rscores)
@@ -1501,8 +1552,11 @@ class CofenseTriageConnector(BaseConnector):
 
             # Ingest the data
             if ingest:
-                self._ingest_data(action_result, ingest_subfields, threat_indicators, processed_params.get(
-                    'label'), processed_params.get('tenant'), processed_params.get('cef_mapping'), "threat indicator", COFENSE_THREAT_LAST_INGESTED_DATE_STRING)
+                self._ingest_data(
+                    action_result, ingest_subfields, threat_indicators, processed_params.get('label'), processed_params.get('tenant'),
+                    processed_params.get('cef_mapping'),
+                    "threat indicator",
+                    COFENSE_THREAT_LAST_INGESTED_DATE_STRING)
 
             if is_scheduled_poll:
                 date_string = COFENSE_THREAT_LAST_INGESTED_DATE_STRING
@@ -1542,7 +1596,14 @@ class CofenseTriageConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _validate_email(self, input_data):
+        """Validate given input email address
 
+        Args:
+            input_data (string): Email addresses
+
+        Returns:
+            true/false (boolean)
+        """
         # Truncate extra commas
         input_data = input_data.strip(',')
         # ignore if contains only commas
@@ -1638,7 +1699,7 @@ class CofenseTriageConnector(BaseConnector):
         response = resp_json.get("data")
         action_result.add_data(response)
 
-        response_id = response.get("id")
+        response_id = response["id"]
         summary_data["response_id"] = response_id
 
         return action_result.set_status(phantom.APP_SUCCESS, "Successfully created the response.")
@@ -1696,7 +1757,8 @@ class CofenseTriageConnector(BaseConnector):
         method = param['download_method']
 
         if method.lower() not in ('artifact', 'vaulted file'):
-            return action_result.set_status(phantom.APP_ERROR, "Please enter either 'artifact' or 'vaulted file' in 'download_method' action parameter")
+            return action_result.set_status(
+                phantom.APP_ERROR, "Please enter either 'artifact' or 'vaulted file' in 'download_method' action parameter")
 
         filename = self._r.headers.get(
             'Content-Disposition', "").split('filename=')[-1].strip('"')
@@ -1708,8 +1770,9 @@ class CofenseTriageConnector(BaseConnector):
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
         else:
-            ret_val, summary, data = self._vault_file(action_result, filename=filename, content=response,
-                                                      makeartifact=source_data_identifier if param.get('create_vaulted_file_artifact', False) else None)
+            ret_val, summary, data = self._vault_file(
+                action_result, filename=filename, content=response,
+                makeartifact=source_data_identifier if param.get('create_vaulted_file_artifact', False) else None)
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
 
@@ -1721,7 +1784,19 @@ class CofenseTriageConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _save_email_artifact(self, action_result, source_data_identifier=None, filename=None, content=None):
+        """
+        Save email artifacts.
 
+        Args:
+            action_result: object of ActionResult class
+            source_data_identifier: Source data identifier. Defaults to None.
+            filename: File Name. Defaults to None.
+            content: Raw email content. Defaults to None.
+
+        Returns:
+            status phantom.APP_ERROR/phantom.APP_SUCCESS(along with appropriate message),
+            summary, data(copy of summary with size of content)
+        """
         if not source_data_identifier or not filename or not content:
             return action_result.set_status(phantom.APP_ERROR, "Error: one or more arguments are null value"), None, None
 
@@ -1764,7 +1839,7 @@ class CofenseTriageConnector(BaseConnector):
 
         try:
             success, _, vault_id = ph_rules.vault_add(file_location=tmp.name, container=self.get_container_id(), file_name=filename)
-        except:
+        except Exception:
             return action_result.set_status(phantom.APP_ERROR, "Error: Unable to add the file to vault"), None, None
 
         if not success:
@@ -1773,7 +1848,7 @@ class CofenseTriageConnector(BaseConnector):
         try:
             _, _, fileinfo = ph_rules.vault_info(vault_id=vault_id, container_id=self.get_container_id())
             fileinfo = list(fileinfo)
-        except:
+        except Exception:
             return action_result.set_status(phantom.APP_ERROR,
                                             "Error: Vault file error, newly vaulted file not found; {}".format(vault_id)), None, None
 
@@ -1853,7 +1928,8 @@ class CofenseTriageConnector(BaseConnector):
             'Authorization': COFENSE_AUTHORIZATION_HEADER.format(self._access_token)
         }
 
-        status, response = self._make_rest_call_helper_oauth2(action_result, COFENSE_THREAT_INDICATORS_ENDPOINT, headers, json=data, method="post")
+        status, response = self._make_rest_call_helper_oauth2(
+            action_result, COFENSE_THREAT_INDICATORS_ENDPOINT, headers, json=data, method="post")
         if phantom.is_fail(status):
             return action_result.get_status()
 
@@ -2272,7 +2348,8 @@ class CofenseTriageConnector(BaseConnector):
 
         # Ingest the data
         if ingest:
-            self._ingest_data(action_result, ingest_subfields, reports, label, tenant, cef_mapping, "report", COFENSE_REPORT_LAST_INGESTED_DATE_STRING)
+            self._ingest_data(
+                action_result, ingest_subfields, reports, label, tenant, cef_mapping, "report", COFENSE_REPORT_LAST_INGESTED_DATE_STRING)
 
         rule["reports"] = reports
         action_result.add_data(rule)
@@ -2393,7 +2470,7 @@ class CofenseTriageConnector(BaseConnector):
             self._state = {
                 "app_version": self.get_app_json().get('app_version')
             }
-            return self.set_status(phantom.APP_ERROR, COFENSE_STATE_FILE_CORRUPT_ERROR)
+            return self.set_status(phantom.APP_ERROR, COFENSE_STATE_FILE_CORRUPT_ERR)
 
         # get the asset config
         config = self.get_config()
@@ -2410,8 +2487,9 @@ class CofenseTriageConnector(BaseConnector):
         if severity_mapping:
             try:
                 self._category_id_to_severity = json.loads(severity_mapping)
-            except:
-                return self.set_status(phantom.APP_ERROR, COFENSE_INVALID_JSON_PARAMETER.format("'category ID to severity mapping' configuration"))
+            except Exception:
+                return self.set_status(
+                    phantom.APP_ERROR, COFENSE_INVALID_JSON_PARAMETER.format("'category ID to severity mapping' configuration"))
 
         return phantom.APP_SUCCESS
 
@@ -2432,8 +2510,10 @@ class CofenseTriageConnector(BaseConnector):
 
 
 def main():
-    import pudb
     import argparse
+    import sys
+
+    import pudb
 
     pudb.set_trace()
 
@@ -2442,6 +2522,7 @@ def main():
     argparser.add_argument('input_test_json', help='Input Test JSON file')
     argparser.add_argument('-u', '--username', help='username', required=False)
     argparser.add_argument('-p', '--password', help='password', required=False)
+    argparser.add_argument('-v', '--verify', action='store_true', help='verify', required=False, default=False)
 
     args = argparser.parse_args()
     session_id = None
@@ -2477,7 +2558,7 @@ def main():
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print("Unable to get session id from the platform. Error: " + str(e))
-            exit(1)
+            sys.exit(1)
 
     with open(args.input_test_json) as f:
         in_json = f.read()
@@ -2494,7 +2575,7 @@ def main():
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))
 
-    exit(0)
+    sys.exit(0)
 
 
 if __name__ == '__main__':

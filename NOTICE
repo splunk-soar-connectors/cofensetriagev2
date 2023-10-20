@@ -1,5 +1,5 @@
 Splunk SOAR Cofense Triage v2 API
-Copyright (c) 2021 Cofense
+Copyright (c) 2021-2023 Cofense
 
 Third-party Software Attributions:
 
@@ -21,8 +21,3 @@ Copyright 2015 - Paul Ganssle <paul@ganssle.io>
 Copyright 2015 - dateutil contributors (see AUTHORS file)
 Copyright 2017 Paul Ganssle <paul@ganssle.io>
 Copyright 2017 dateutil contributors (see AUTHORS file)
-
-Library: requests
-Version: 2.25.0
-License: Apache 2.0
-Kenneth Reitz

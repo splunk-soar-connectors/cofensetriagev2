@@ -1,6 +1,6 @@
 [comment]: # " File: README.md"
 [comment]: # ""
-[comment]: # "    Copyright (c) 2021 Cofense"
+[comment]: # "    Copyright (c) 2021-2023 Cofense"
 [comment]: # ""
 [comment]: # "    This unpublished material is proprietary to Cofense."
 [comment]: # "    All rights reserved. The methods and"
