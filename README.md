@@ -2,15 +2,15 @@
 # Cofense Triage v2 API
 
 Publisher: Cofense  
-Connector Version: 1\.0\.4  
+Connector Version: 1.1.0  
 Product Vendor: Cofense  
 Product Name: Triage v2  
-Product Version Supported (regex): "\.\*"  
-Minimum Product Version: 4\.9\.39220  
+Product Version Supported (regex): ".\*"  
+Minimum Product Version: 6.0.0  
 
 This app supports actions for Cofense Triage's version 2 API for faster bidirectional phishing analysis and response
 
-[comment]: # " File: readme.md"
+[comment]: # " File: README.md"
 [comment]: # ""
 [comment]: # "    Copyright (c) 2021-2023 Cofense"
 [comment]: # ""
@@ -1301,25 +1301,25 @@ The below configuration variables are required for this Connector to operate.  T
 
 VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
-**base\_url** |  required  | string | Server URL
-**verify\_server\_cert** |  optional  | boolean | Verify server certificate
-**client\_id** |  required  | string | Client ID
-**client\_secret** |  required  | password | Client Secret
-**ingestion\_type** |  optional  | string | The type of data that is to be ingested
-**threat\_indicator\_type** |  optional  | string | Filters the results based on the type of the threat indicator\. The default retrieves all
-**threat\_indicator\_level** |  optional  | string | Filters the results based on the level of the threat indicator\. The default retrieves all
-**report\_location** |  optional  | string | Filters the reports based on the location of the report\. The default retrieves all
-**match\_priority** |  optional  | numeric | Filters the results based on the highest priority of a rule matching the reported email
-**category\_id** |  optional  | numeric | Filters the reports based on the category ID
-**tags** |  optional  | string | Allows filtering the reports based on the list of comma\-separated tags
-**categorization\_tags** |  optional  | string | Allows filtering the reports based on the list of comma\-separated categorization tags
-**ingest\_subfields** |  optional  | boolean | Allows ingestion of the fields relating to the fetched data into the container
-**category\_id\_to\_severity** |  optional  | string | Mapping between report category ID and the Phantom container severity
-**cef\_mapping** |  optional  | string | JSON dictionary represented as a serialized JSON string\. Each key in the dictionary is a potential key name in an artifact that is to be renamed to the value
-**start\_date** |  optional  | string | The initial start date and time of the ingestion
-**sort** |  optional  | string | Sorts the results based on the 'updated\_at' date\. The default sorts in the oldest first order
-**update\_state\_after** |  optional  | numeric | Allows updating the state after ingestion of a specified number of containers
-**max\_results** |  optional  | numeric | Maximum number of results to ingest
+**base_url** |  required  | string | Server URL
+**verify_server_cert** |  optional  | boolean | Verify server certificate
+**client_id** |  required  | string | Client ID
+**client_secret** |  required  | password | Client Secret
+**ingestion_type** |  optional  | string | The type of data that is to be ingested
+**threat_indicator_type** |  optional  | string | Filters the results based on the type of the threat indicator. The default retrieves all
+**threat_indicator_level** |  optional  | string | Filters the results based on the level of the threat indicator. The default retrieves all
+**report_location** |  optional  | string | Filters the reports based on the location of the report. The default retrieves all
+**match_priority** |  optional  | numeric | Filters the results based on the highest priority of a rule matching the reported email
+**category_id** |  optional  | numeric | Filters the reports based on the category ID
+**tags** |  optional  | string | Allows filtering the reports based on the list of comma-separated tags
+**categorization_tags** |  optional  | string | Allows filtering the reports based on the list of comma-separated categorization tags
+**ingest_subfields** |  optional  | boolean | Allows ingestion of the fields relating to the fetched data into the container
+**category_id_to_severity** |  optional  | string | Mapping between report category ID and the Phantom container severity
+**cef_mapping** |  optional  | string | JSON dictionary represented as a serialized JSON string. Each key in the dictionary is a potential key name in an artifact that is to be renamed to the value
+**start_date** |  optional  | string | The initial start date and time of the ingestion
+**sort** |  optional  | string | Sorts the results based on the 'updated_at' date. The default sorts in the oldest first order
+**update_state_after** |  optional  | numeric | Allows updating the state after ingestion of a specified number of containers
+**max_results** |  optional  | numeric | Maximum number of results to ingest
 
 ### Supported Actions  
 [test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration  
@@ -1327,8 +1327,8 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [get report](#action-get-report) - Retrieve a report with the provided ID from the Cofense Triage Platform  
 [get email](#action-get-email) - Downloads the raw email for the report that matches the specified report ID  
 [get categories](#action-get-categories) - Retrieve categories from the Cofense Triage Platform filtered based on the provided parameters  
-[get responses](#action-get-responses) - Retrieve responses from the Cofense Triage Platform\. This action is supported for Cofense Triage with version older than 1\.23  
-[create response](#action-create-response) - Create a response\. This action is supported for Cofense Triage with version older than 1\.23  
+[get responses](#action-get-responses) - Retrieve responses from the Cofense Triage Platform. This action is supported for Cofense Triage with version older than 1.23  
+[create response](#action-create-response) - Create a response. This action is supported for Cofense Triage with version older than 1.23  
 [categorize report](#action-categorize-report) - Categorize a report into the provided category  
 [get threat indicators](#action-get-threat-indicators) - Retrieve threat indicators from the Cofense Triage Platform filtered based on the provided parameters  
 [create threat indicator](#action-create-threat-indicator) - Create a threat indicator with the provided parameters  
@@ -1361,110 +1361,129 @@ Retrieve reports from the Cofense Triage Platform filtered based on the provided
 Type: **investigate**  
 Read only: **True**
 
-If the 'ingest\_subfields' parameter is true, the report and the subfields together will get ingested into the container\. If no value is provided in any parameter, then all the records will be retrieved\.
+If the 'ingest_subfields' parameter is true, the report and the subfields together will get ingested into the container. If no value is provided in any parameter, then all the records will be retrieved. If reporter_id and category_id both are provided then reports will be fetched based on category_id.
 
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
 **location** |  optional  | Allows filtering the reports based on the location | string |  `cofensetriage report location` 
-**from\_address** |  optional  | Allows filtering the reports based on the sender's email address of the reported email | string |  `email` 
-**reporter\_email** |  optional  | Allows filtering the reports based on the reporter's email address | string |  `email` 
+**from_address** |  optional  | Allows filtering the reports based on the sender's email address of the reported email | string |  `email` 
+**reporter_email** |  optional  | Allows filtering the reports based on the reporter's email address | string |  `email` 
 **subject** |  optional  | Allows filtering the reports based on the subject of the reported email | string |  `cofensetriage report subject` 
-**match\_priority** |  optional  | Allows filtering the result data set based on the highest priority of a rule matching the reported email | numeric |  `cofensetriage priority` 
-**category\_id** |  optional  | Allows filtering the reports based on the category ID | numeric |  `cofensetriage category id` 
-**start\_date** |  optional  | Allows filtering the reports updated on or after the provided date | string |  `date` 
-**end\_date** |  optional  | Allows filtering the reports updated before the provided date | string |  `date` 
-**tags** |  optional  | Allows filtering the reports based on the list of comma\-separated tags\. If the tag value contains a comma, enclose it in double\-quotes \(Example\: tag1,"test,tag",tag2\) | string |  `cofensetriage tag` 
-**categorization\_tags** |  optional  | Allows filtering the reports based on the list of comma\-separated categorization tags | string |  `cofensetriage tag` 
-**sort** |  optional  | Allows sorting the reports based on the 'updated\_at' date of the report | string | 
-**ingest\_report** |  optional  | Allows ingestion of the report into the container | boolean | 
-**ingest\_subfields** |  optional  | Allows ingestion of the fields relating to the report into the container | boolean | 
-**label** |  optional  | Allows ingestion of data into the container\(s\) with the provided label\. The label must be valid or the action will fail\. Required if 'ingest\_report' or 'ingest\_subfields' is set | string | 
-**tenant** |  optional  | Allows creation of container\(s\) for the provided tenant ID or tenant name\. The tenant must be valid or the action will fail\. Required if 'ingest\_report' or 'ingest\_subfields' is set | string | 
-**cef\_mapping** |  optional  | JSON dictionary represented as a serialized JSON string\. Each key in the dictionary is a potential key name in an artifact that is to be renamed to the value | string | 
-**max\_results** |  optional  | Maximum number of results to return | numeric | 
+**match_priority** |  optional  | Allows filtering the result data set based on the highest priority of a rule matching the reported email | numeric |  `cofensetriage priority` 
+**category_id** |  optional  | Allows filtering the reports based on the category ID | numeric |  `cofensetriage category id` 
+**start_date** |  optional  | Allows filtering the reports updated on or after the provided date | string |  `date` 
+**end_date** |  optional  | Allows filtering the reports updated before the provided date | string |  `date` 
+**tags** |  optional  | Allows filtering the reports based on the list of comma-separated tags. If the tag value contains a comma, enclose it in double-quotes (Example: tag1,"test,tag",tag2) | string |  `cofensetriage tag` 
+**categorization_tags** |  optional  | Allows filtering the reports based on the list of comma-separated categorization tags | string |  `cofensetriage tag` 
+**sort** |  optional  | Allows sorting the reports based on the 'updated_at' date of the report | string | 
+**ingest_report** |  optional  | Allows ingestion of the report into the container | boolean | 
+**ingest_subfields** |  optional  | Allows ingestion of the fields relating to the report into the container | boolean | 
+**label** |  optional  | Allows ingestion of data into the container(s) with the provided label. The label must be valid or the action will fail. Required if 'ingest_report' or 'ingest_subfields' is set | string | 
+**tenant** |  optional  | Allows creation of container(s) for the provided tenant ID or tenant name. The tenant must be valid or the action will fail. Required if 'ingest_report' or 'ingest_subfields' is set | string | 
+**cef_mapping** |  optional  | JSON dictionary represented as a serialized JSON string. Each key in the dictionary is a potential key name in an artifact that is to be renamed to the value | string | 
+**max_results** |  optional  | Maximum number of results to return | numeric | 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.location | string |  `cofensetriage report location` 
-action\_result\.parameter\.from\_address | string |  `email` 
-action\_result\.parameter\.reporter\_email | string |  `email` 
-action\_result\.parameter\.subject | string |  `cofensetriage report subject` 
-action\_result\.parameter\.match\_priority | numeric |  `cofensetriage priority` 
-action\_result\.parameter\.category\_id | numeric |  `cofensetriage category id` 
-action\_result\.parameter\.start\_date | string |  `date` 
-action\_result\.parameter\.end\_date | string |  `date` 
-action\_result\.parameter\.tags | string |  `cofensetriage tag` 
-action\_result\.parameter\.categorization\_tags | string |  `cofensetriage tag` 
-action\_result\.parameter\.sort | string | 
-action\_result\.parameter\.ingest\_report | boolean | 
-action\_result\.parameter\.ingest\_subfields | boolean | 
-action\_result\.parameter\.label | string | 
-action\_result\.parameter\.tenant | string | 
-action\_result\.parameter\.cef\_mapping | string | 
-action\_result\.parameter\.max\_results | numeric | 
-action\_result\.data\.\*\.id | string |  `cofensetriage report id` 
-action\_result\.data\.\*\.meta\.risk\_score\_summary\.vip | numeric | 
-action\_result\.data\.\*\.meta\.risk\_score\_summary\.rules | numeric | 
-action\_result\.data\.\*\.meta\.risk\_score\_summary\.reporter | numeric | 
-action\_result\.data\.\*\.meta\.risk\_score\_summary\.integrations | numeric | 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.data\.\*\.attributes\.md5 | string |  `md5` 
-action\_result\.data\.\*\.attributes\.sha256 | string |  `sha256` 
-action\_result\.data\.\*\.attributes\.subject | string |  `cofensetriage report subject` 
-action\_result\.data\.\*\.attributes\.location | string |  `cofensetriage report location` 
-action\_result\.data\.\*\.attributes\.html\_body | string | 
-action\_result\.data\.\*\.attributes\.text\_body | string | 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.risk\_score | numeric | 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.raw\_headers | string | 
-action\_result\.data\.\*\.attributes\.received\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.reported\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.from\_address | string |  `email` 
-action\_result\.data\.\*\.attributes\.processed\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.match\_priority | numeric |  `cofensetriage priority` 
-action\_result\.data\.\*\.attributes\.categorization\_tags | string |  `cofensetriage tag` 
-action\_result\.data\.\*\.attributes\.tags | string |  `cofensetriage tag` 
-action\_result\.data\.\*\.container\_id | numeric |  `container id` 
-action\_result\.data\.\*\.relationships\.urls\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.urls\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.rules\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.rules\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.cluster\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.cluster\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.cluster\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.cluster\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.headers\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.headers\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.assignee\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.assignee\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.assignee\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.assignee\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.category\.data\.id | string |  `cofensetriage category id` 
-action\_result\.data\.\*\.relationships\.category\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.category\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.category\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.reporter\.data\.id | string |  `cofensetriage reporter id` 
-action\_result\.data\.\*\.relationships\.reporter\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.reporter\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.reporter\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.hostnames\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.hostnames\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.attachments\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.attachments\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.threat\_indicators\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.threat\_indicators\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.attachment\_payloads\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.attachment\_payloads\.links\.related | string |  `url` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary | string | 
-action\_result\.summary\.total\_reports\_retrieved | numeric | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.location | string |  `cofensetriage report location`  |   Processed 
+action_result.parameter.from_address | string |  `email`  |   test@example.com 
+action_result.parameter.reporter_email | string |  `email`  |   test@example.com 
+action_result.parameter.subject | string |  `cofensetriage report subject`  |   Demo 
+action_result.parameter.match_priority | numeric |  `cofensetriage priority`  |   5 
+action_result.parameter.category_id | numeric |  `cofensetriage category id`  |   4 
+action_result.parameter.start_date | string |  `date`  |   2021-03-5 11:20:00 
+action_result.parameter.end_date | string |  `date`  |   2021-03-11 01:20:00 
+action_result.parameter.tags | string |  `cofensetriage tag`  |   test 
+action_result.parameter.categorization_tags | string |  `cofensetriage tag`  |   test 
+action_result.parameter.sort | string |  |   oldest_first  latest_first 
+action_result.parameter.ingest_report | boolean |  |   True  False 
+action_result.parameter.ingest_subfields | boolean |  |   False  True 
+action_result.parameter.label | string |  |   events 
+action_result.parameter.tenant | string |  |   default 
+action_result.parameter.cef_mapping | string |  |  
+action_result.parameter.max_results | numeric |  |   5 
+action_result.data.\*.id | string |  `cofensetriage report id`  |   779 
+action_result.data.\*.meta.risk_score_summary.vip | numeric |  |   5 
+action_result.data.\*.meta.risk_score_summary.rules | numeric |  |   0 
+action_result.data.\*.meta.risk_score_summary.reporter | numeric |  |   15 
+action_result.data.\*.meta.risk_score_summary.integrations | numeric |  |   15 
+action_result.data.\*.type | string |  |   reports 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779 
+action_result.data.\*.attributes.md5 | string |  `md5`  |   bf858b01ec8e0fd8219ffff0c1606ff8 
+action_result.data.\*.attributes.sha256 | string |  `sha256`  |   e520fe082f28de7bb25b9fa82de1e0b8ecea5922b06d5424b9829695c7c6fc06 
+action_result.data.\*.attributes.subject | string |  `cofensetriage report subject`  |   Demo 
+action_result.data.\*.attributes.location | string |  `cofensetriage report location`  |   Processed 
+action_result.data.\*.attributes.html_body | string |  |  
+action_result.data.\*.attributes.text_body | string |  |  
+action_result.data.\*.attributes.created_at | string |  `date`  |   2021-03-05T02:45:26.037Z 
+action_result.data.\*.attributes.risk_score | numeric |  |   35 
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2021-03-11T12:19:35.470Z 
+action_result.data.\*.attributes.raw_headers | string |  |  
+action_result.data.\*.attributes.received_at | string |  `date`  |   2021-03-05T02:38:59.000Z 
+action_result.data.\*.attributes.reported_at | string |  `date`  |   2021-03-05T02:38:59.000Z 
+action_result.data.\*.attributes.from_address | string |  `email`  |   test@example.com 
+action_result.data.\*.attributes.processed_at | string |  `date`  |   2021-03-11T12:19:33.337Z 
+action_result.data.\*.attributes.match_priority | numeric |  `cofensetriage priority`  |   0 
+action_result.data.\*.attributes.categorization_tags | string |  `cofensetriage tag`  |   test 
+action_result.data.\*.attributes.tags | string |  `cofensetriage tag`  |   test 
+action_result.data.\*.container_id | numeric |  `container id`  |   240 
+action_result.data.\*.relationships.urls.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/relationships/urls 
+action_result.data.\*.relationships.urls.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/urls 
+action_result.data.\*.relationships.rules.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/relationships/rules 
+action_result.data.\*.relationships.rules.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/rules 
+action_result.data.\*.relationships.cluster.data.id | string |  |   255 
+action_result.data.\*.relationships.cluster.data.type | string |  |   clusters 
+action_result.data.\*.relationships.cluster.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/relationships/cluster 
+action_result.data.\*.relationships.cluster.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/cluster 
+action_result.data.\*.relationships.headers.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/relationships/headers 
+action_result.data.\*.relationships.headers.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/headers 
+action_result.data.\*.relationships.assignee.data.id | string |  |   1 
+action_result.data.\*.relationships.assignee.data.type | string |  |   assignees 
+action_result.data.\*.relationships.assignee.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/relationships/assignee 
+action_result.data.\*.relationships.assignee.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/assignee 
+action_result.data.\*.relationships.category.data.id | string |  `cofensetriage category id`  |   6 
+action_result.data.\*.relationships.category.data.type | string |  |   categories 
+action_result.data.\*.relationships.category.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/relationships/category 
+action_result.data.\*.relationships.category.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/category 
+action_result.data.\*.relationships.reporter.data.id | string |  `cofensetriage reporter id`  |   24 
+action_result.data.\*.relationships.reporter.data.type | string |  |   reporters 
+action_result.data.\*.relationships.reporter.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/relationships/reporter 
+action_result.data.\*.relationships.reporter.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/reporter 
+action_result.data.\*.relationships.hostnames.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/relationships/hostnames 
+action_result.data.\*.relationships.hostnames.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/hostnames 
+action_result.data.\*.relationships.attachments.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/relationships/attachments 
+action_result.data.\*.relationships.attachments.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/attachments 
+action_result.data.\*.relationships.threat_indicators.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/relationships/threat_indicators 
+action_result.data.\*.relationships.threat_indicators.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/threat_indicators 
+action_result.data.\*.relationships.attachment_payloads.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/relationships/attachment_payloads 
+action_result.data.\*.relationships.attachment_payloads.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/779/attachment_payloads 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Total reports retrieved: 15 
+action_result.summary | string |  |  
+action_result.summary.total_reports_retrieved | numeric |  |   15 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1 
+action_result.data.\*.attributes.urls_count | numeric |  |   12 
+action_result.data.\*.attributes.rules_count | numeric |  |   2 
+action_result.data.\*.attributes.comments_count | numeric |  |   1 
+action_result.data.\*.attributes.attachments_count | numeric |  |   0 
+action_result.data.\*.attributes.first_processed_at | string |  |   2022-03-01T07:14:34.040Z 
+action_result.data.\*.relationships.domains.links.self | string |  |   https://test.testcloud.com/api/public/v2/reports/1/relationships/domains 
+action_result.data.\*.relationships.domains.links.related | string |  |   https://test.testcloud.com/api/public/v2/reports/1/domains 
+action_result.data.\*.relationships.assignee.data | string |  |  
+action_result.data.\*.relationships.comments.links.self | string |  |   https://test.testcloud.com/api/public/v2/reports/1/relationships/comments 
+action_result.data.\*.relationships.comments.links.related | string |  |   https://test.testcloud.com/api/public/v2/reports/1/comments 
+action_result.data.\*.relationships.processed_by.data.id | string |  |   1 
+action_result.data.\*.relationships.processed_by.data.type | string |  |   api_applications 
+action_result.data.\*.relationships.processed_by.links.self | string |  |   https://test.testcloud.com/api/public/v2/reports/1/relationships/processed_by 
+action_result.data.\*.relationships.processed_by.links.related | string |  |   https://test.testcloud.com/api/public/v2/reports/1/processed_by 
+action_result.data.\*.relationships.cofense_intelligence_indicators.links.self | string |  |   https://test.testcloud.com/api/public/v2/reports/1/relationships/cofense_intelligence_indicators 
+action_result.data.\*.relationships.cofense_intelligence_indicators.links.related | string |  |   https://test.testcloud.com/api/public/v2/reports/1/cofense_intelligence_indicators 
+action_result.data.\*.relationships.processed_by.data | string |  |  
+action_result.data.\*.relationships.cluster.data | string |  |  
+action_result.data.\*.relationships.category.data | string |  |    
 
 ## action: 'get report'
 Retrieve a report with the provided ID from the Cofense Triage Platform
@@ -1472,87 +1491,87 @@ Retrieve a report with the provided ID from the Cofense Triage Platform
 Type: **investigate**  
 Read only: **True**
 
-If the 'ingest\_subfields' parameter is true, the report and the subfields together will get ingested into the container\.
+If the 'ingest_subfields' parameter is true, the report and the subfields together will get ingested into the container.
 
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**report\_id** |  required  | The ID of the report which is to be fetched | numeric |  `cofensetriage report id` 
-**ingest\_report** |  optional  | Allow ingestion of the report into the container | boolean | 
-**ingest\_subfields** |  optional  | Ingestion of the fields relating to the report into the container | boolean | 
-**label** |  optional  | Allows ingestion of data into the container\(s\) with the provided label\. The label must be valid or the action will fail\. Required if 'ingest\_report' or 'ingest\_subfields' is set | string | 
-**tenant** |  optional  | Allows creation of container\(s\) for the provided tenant ID or tenant name\. The tenant must be valid or the action will fail\. Required if 'ingest\_report' or 'ingest\_subfields' is set | string | 
-**cef\_mapping** |  optional  | JSON dictionary represented as a serialized JSON string\. Each key in the dictionary is a potential key name in an artifact that is to be renamed to the value | string | 
+**report_id** |  required  | The ID of the report which is to be fetched | numeric |  `cofensetriage report id` 
+**ingest_report** |  optional  | Allow ingestion of the report into the container | boolean | 
+**ingest_subfields** |  optional  | Ingestion of the fields relating to the report into the container | boolean | 
+**label** |  optional  | Allows ingestion of data into the container(s) with the provided label. The label must be valid or the action will fail. Required if 'ingest_report' or 'ingest_subfields' is set | string | 
+**tenant** |  optional  | Allows creation of container(s) for the provided tenant ID or tenant name. The tenant must be valid or the action will fail. Required if 'ingest_report' or 'ingest_subfields' is set | string | 
+**cef_mapping** |  optional  | JSON dictionary represented as a serialized JSON string. Each key in the dictionary is a potential key name in an artifact that is to be renamed to the value | string | 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.report\_id | numeric |  `cofensetriage report id` 
-action\_result\.parameter\.ingest\_report | boolean | 
-action\_result\.parameter\.ingest\_subfields | boolean | 
-action\_result\.parameter\.label | string | 
-action\_result\.parameter\.tenant | string | 
-action\_result\.parameter\.cef\_mapping | string | 
-action\_result\.data\.\*\.id | string |  `cofensetriage report id` 
-action\_result\.data\.\*\.container\_id | numeric |  `container id` 
-action\_result\.data\.\*\.meta\.risk\_score\_summary\.vip | numeric | 
-action\_result\.data\.\*\.meta\.risk\_score\_summary\.rules | numeric | 
-action\_result\.data\.\*\.meta\.risk\_score\_summary\.reporter | numeric | 
-action\_result\.data\.\*\.meta\.risk\_score\_summary\.integrations | numeric | 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.data\.\*\.attributes\.md5 | string |  `md5` 
-action\_result\.data\.\*\.attributes\.sha256 | string |  `sha256` 
-action\_result\.data\.\*\.attributes\.subject | string |  `cofensetriage report subject` 
-action\_result\.data\.\*\.attributes\.location | string |  `cofensetriage report location` 
-action\_result\.data\.\*\.attributes\.html\_body | string | 
-action\_result\.data\.\*\.attributes\.text\_body | string | 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.risk\_score | numeric | 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.raw\_headers | string | 
-action\_result\.data\.\*\.attributes\.received\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.reported\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.from\_address | string |  `email` 
-action\_result\.data\.\*\.attributes\.processed\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.match\_priority | numeric |  `cofensetriage priority` 
-action\_result\.data\.\*\.attributes\.categorization\_tags | string |  `cofensetriage tag` 
-action\_result\.data\.\*\.attributes\.tags | string |  `cofensetriage tag` 
-action\_result\.data\.\*\.relationships\.urls\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.urls\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.rules\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.rules\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.cluster\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.cluster\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.cluster\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.cluster\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.headers\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.headers\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.assignee\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.assignee\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.assignee\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.assignee\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.category\.data\.id | string |  `cofensetriage category id` 
-action\_result\.data\.\*\.relationships\.category\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.category\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.category\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.reporter\.data\.id | string |  `cofensetriage reporter id` 
-action\_result\.data\.\*\.relationships\.reporter\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.reporter\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.reporter\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.hostnames\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.hostnames\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.attachments\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.attachments\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.threat\_indicators\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.threat\_indicators\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.attachment\_payloads\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.attachment\_payloads\.links\.related | string |  `url` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary | string | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.report_id | numeric |  `cofensetriage report id`  |   781 
+action_result.parameter.ingest_report | boolean |  |   False  True 
+action_result.parameter.ingest_subfields | boolean |  |   False  True 
+action_result.parameter.label | string |  |   events 
+action_result.parameter.tenant | string |  |   default 
+action_result.parameter.cef_mapping | string |  |  
+action_result.data.\*.id | string |  `cofensetriage report id`  |   781 
+action_result.data.\*.container_id | numeric |  `container id`  |   781 
+action_result.data.\*.meta.risk_score_summary.vip | numeric |  |   5 
+action_result.data.\*.meta.risk_score_summary.rules | numeric |  |   0 
+action_result.data.\*.meta.risk_score_summary.reporter | numeric |  |   15 
+action_result.data.\*.meta.risk_score_summary.integrations | numeric |  |   0 
+action_result.data.\*.type | string |  |   reports 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781 
+action_result.data.\*.attributes.md5 | string |  `md5`  |   aadc9a5a046e00df0dcb2ffb7ddfa7b3 
+action_result.data.\*.attributes.sha256 | string |  `sha256`  |   157fa62949e9edbadc2f9a2dd8e9b34671d0f4b804bc7d6ed8259dac0c26e7cb 
+action_result.data.\*.attributes.subject | string |  `cofensetriage report subject`  |   Test mail 
+action_result.data.\*.attributes.location | string |  `cofensetriage report location`  |   Reconnaissance 
+action_result.data.\*.attributes.html_body | string |  |  
+action_result.data.\*.attributes.text_body | string |  |  
+action_result.data.\*.attributes.created_at | string |  `date`  |   2021-03-05T02:45:27.398Z 
+action_result.data.\*.attributes.risk_score | numeric |  |   20 
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2021-03-05T02:45:28.899Z 
+action_result.data.\*.attributes.raw_headers | string |  |  
+action_result.data.\*.attributes.received_at | string |  `date`  |   2021-03-05T02:37:48.000Z 
+action_result.data.\*.attributes.reported_at | string |  `date`  |   2021-03-05T02:37:46.000Z 
+action_result.data.\*.attributes.from_address | string |  `email`  |   test@example.com 
+action_result.data.\*.attributes.processed_at | string |  `date`  |   2021-03-05T02:40:46.000Z 
+action_result.data.\*.attributes.match_priority | numeric |  `cofensetriage priority`  |   0 
+action_result.data.\*.attributes.categorization_tags | string |  `cofensetriage tag`  |   test 
+action_result.data.\*.attributes.tags | string |  `cofensetriage tag`  |   test 
+action_result.data.\*.relationships.urls.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/relationships/urls 
+action_result.data.\*.relationships.urls.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/urls 
+action_result.data.\*.relationships.rules.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/relationships/rules 
+action_result.data.\*.relationships.rules.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/rules 
+action_result.data.\*.relationships.cluster.data.id | string |  |   255 
+action_result.data.\*.relationships.cluster.data.type | string |  |   clusters 
+action_result.data.\*.relationships.cluster.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/relationships/cluster 
+action_result.data.\*.relationships.cluster.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/cluster 
+action_result.data.\*.relationships.headers.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/relationships/headers 
+action_result.data.\*.relationships.headers.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/headers 
+action_result.data.\*.relationships.assignee.data.id | string |  |   1 
+action_result.data.\*.relationships.assignee.data.type | string |  |   assignees 
+action_result.data.\*.relationships.assignee.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/relationships/assignee 
+action_result.data.\*.relationships.assignee.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/assignee 
+action_result.data.\*.relationships.category.data.id | string |  `cofensetriage category id`  |   6 
+action_result.data.\*.relationships.category.data.type | string |  |   categories 
+action_result.data.\*.relationships.category.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/relationships/category 
+action_result.data.\*.relationships.category.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/category 
+action_result.data.\*.relationships.reporter.data.id | string |  `cofensetriage reporter id`  |   24 
+action_result.data.\*.relationships.reporter.data.type | string |  |   reporters 
+action_result.data.\*.relationships.reporter.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/relationships/reporter 
+action_result.data.\*.relationships.reporter.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/reporter 
+action_result.data.\*.relationships.hostnames.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/relationships/hostnames 
+action_result.data.\*.relationships.hostnames.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/hostnames 
+action_result.data.\*.relationships.attachments.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/relationships/attachments 
+action_result.data.\*.relationships.attachments.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/attachments 
+action_result.data.\*.relationships.threat_indicators.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/relationships/threat_indicators 
+action_result.data.\*.relationships.threat_indicators.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/threat_indicators 
+action_result.data.\*.relationships.attachment_payloads.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/relationships/attachment_payloads 
+action_result.data.\*.relationships.attachment_payloads.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/781/attachment_payloads 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Successfully fetched the report 
+action_result.summary | string |  |  
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'get email'
 Downloads the raw email for the report that matches the specified report ID
@@ -1563,33 +1582,33 @@ Read only: **True**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**report\_id** |  required  | The ID of the report | numeric |  `cofensetriage report id` 
-**download\_method** |  required  | Allows the user to download the email as an artifact or as a vaulted file | string | 
-**create\_vaulted\_file\_artifact** |  optional  | If storing as a vaulted file, this parameter allows the user to create an artifact referencing that file | boolean | 
+**report_id** |  required  | The ID of the report | numeric |  `cofensetriage report id` 
+**download_method** |  required  | Allows the user to download the email as an artifact or as a vaulted file | string | 
+**create_vaulted_file_artifact** |  optional  | If storing as a vaulted file, this parameter allows the user to create an artifact referencing that file | boolean | 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.create\_vaulted\_file\_artifact | boolean | 
-action\_result\.parameter\.download\_method | string | 
-action\_result\.parameter\.report\_id | numeric |  `cofensetriage report id` 
-action\_result\.data\.\*\.artifact\_id | string |  `artifact id` 
-action\_result\.data\.\*\.filename | string |  `file name` 
-action\_result\.data\.\*\.md5 | string |  `md5`  `hash` 
-action\_result\.data\.\*\.report\_id | string |  `cofensetriage report id` 
-action\_result\.data\.\*\.sha1 | string |  `sha1`  `hash` 
-action\_result\.data\.\*\.sha256 | string |  `sha256`  `hash` 
-action\_result\.data\.\*\.size | string | 
-action\_result\.data\.\*\.vault\_id | string |  `vault id` 
-action\_result\.data\.\*\.vaulted | string |  `file path` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary\.filename | string |  `file name` 
-action\_result\.summary\.vault\_id | string |  `vault id` 
-action\_result\.summary\.report\_id | numeric |  `cofensetriage report id` 
-action\_result\.summary\.artifact\_id | numeric |  `artifact id` 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.create_vaulted_file_artifact | boolean |  |   True  False 
+action_result.parameter.download_method | string |  |   artifact  vaulted file 
+action_result.parameter.report_id | numeric |  `cofensetriage report id`  |   1 
+action_result.data.\*.artifact_id | string |  `artifact id`  |   2 
+action_result.data.\*.filename | string |  `file name`  |   test.eml 
+action_result.data.\*.md5 | string |  `md5`  `hash`  |   17c200f0a14e1cbe23c04343c5d858ee 
+action_result.data.\*.report_id | string |  `cofensetriage report id`  |   1 
+action_result.data.\*.sha1 | string |  `sha1`  `hash`  |   4ef03a5e510cb4a930c51ceaa6110928a8f99257 
+action_result.data.\*.sha256 | string |  `sha256`  `hash`  |   a949bb915fa346d56522455ba2d598653b1a42197437395f30b906079e67d8bb 
+action_result.data.\*.size | string |  |   31960 
+action_result.data.\*.vault_id | string |  `vault id`  |   4ef03a5e510cb4a930c51ceaa6110928a8f99257 
+action_result.data.\*.vaulted | string |  `file path`  |   /vault/path/4ef03a5e510cb4a930c51ceaa6110928a8f99257 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Vault id: 998c8298597498169d7eaae7d8a9d2146475a156, Filename: report_10.eml, Artifact id: 11321, Report id: 10 
+action_result.summary.filename | string |  `file name`  |   report_1.eml 
+action_result.summary.vault_id | string |  `vault id`  |   998c8298597498169d7eaae7d8a9d2146475a156 
+action_result.summary.report_id | numeric |  `cofensetriage report id`  |   1 
+action_result.summary.artifact_id | numeric |  `artifact id`  |   1094 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'get categories'
 Retrieve categories from the Cofense Triage Platform filtered based on the provided parameters
@@ -1597,43 +1616,43 @@ Retrieve categories from the Cofense Triage Platform filtered based on the provi
 Type: **investigate**  
 Read only: **True**
 
-If no value is provided in any parameter, then all the records will be retrieved\.
+If no value is provided in any parameter, then all the records will be retrieved.
 
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
 **name** |  optional  | Allows the user to fetch the categories with the name containing a specific string | string |  `cofensetriage category name` 
 **malicious** |  optional  | Allows the user to fetch the categories based on whether the category is used to classify malicious reports or not | boolean | 
-**max\_results** |  optional  | Maximum number of results to return | numeric | 
+**max_results** |  optional  | Maximum number of results to return | numeric | 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.name | string |  `cofensetriage category name` 
-action\_result\.parameter\.malicious | boolean | 
-action\_result\.parameter\.max\_results | numeric | 
-action\_result\.data\.\*\.id | string |  `cofensetriage category id` 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.data\.\*\.attributes\.name | string |  `cofensetriage category name` 
-action\_result\.data\.\*\.attributes\.color | string | 
-action\_result\.data\.\*\.attributes\.score | numeric | 
-action\_result\.data\.\*\.attributes\.archived | boolean | 
-action\_result\.data\.\*\.attributes\.malicious | boolean | 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.relationships\.reports\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.reports\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.one\_clicks\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.one\_clicks\.links\.related | string |  `url` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary\.total\_categories\_retrieved | numeric | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.name | string |  `cofensetriage category name`  |   Non-Malicious 
+action_result.parameter.malicious | boolean |  |   False  True 
+action_result.parameter.max_results | numeric |  |   100 
+action_result.data.\*.id | string |  `cofensetriage category id`  |   1 
+action_result.data.\*.type | string |  |   categories 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/categories/1 
+action_result.data.\*.attributes.name | string |  `cofensetriage category name`  |   Non-Malicious 
+action_result.data.\*.attributes.color | string |  |   #739d75 
+action_result.data.\*.attributes.score | numeric |  |   -5 
+action_result.data.\*.attributes.archived | boolean |  |   False  True 
+action_result.data.\*.attributes.malicious | boolean |  |   False  True 
+action_result.data.\*.attributes.created_at | string |  `date`  |   2020-10-21T15:30:56.280Z 
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2020-10-21T15:30:56.280Z 
+action_result.data.\*.relationships.reports.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/categories/1/relationships/reports 
+action_result.data.\*.relationships.reports.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/categories/1/reports 
+action_result.data.\*.relationships.one_clicks.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/categories/1/relationships/one_clicks 
+action_result.data.\*.relationships.one_clicks.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/categories/1/one_clicks 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Total categories retrieved: 1 
+action_result.summary.total_categories_retrieved | numeric |  |   10 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'get responses'
-Retrieve responses from the Cofense Triage Platform\. This action is supported for Cofense Triage with version older than 1\.23
+Retrieve responses from the Cofense Triage Platform. This action is supported for Cofense Triage with version older than 1.23
 
 Type: **investigate**  
 Read only: **True**
@@ -1641,37 +1660,37 @@ Read only: **True**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**max\_results** |  optional  | Allows the user to limit the number of results | numeric | 
+**max_results** |  optional  | Allows the user to limit the number of results | numeric | 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.max\_results | numeric | 
-action\_result\.data\.\*\.id | string |  `cofensetirage response id` 
-action\_result\.data\.\*\.relationships\.one\_clicks\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.one\_clicks\.links\.related | string |  `url` 
-action\_result\.data\.\*\.attributes\.body | string | 
-action\_result\.data\.\*\.attributes\.name | string | 
-action\_result\.data\.\*\.attributes\.to\_other | boolean | 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.bcc\_address | string |  `email` 
-action\_result\.data\.\*\.attributes\.cc\_address | string |  `email` 
-action\_result\.data\.\*\.attributes\.attach\_original | boolean | 
-action\_result\.data\.\*\.attributes\.to\_other\_address | string |  `email` 
-action\_result\.data\.\*\.attributes\.subject | string | 
-action\_result\.data\.\*\.attributes\.to\_reporter | boolean | 
-action\_result\.data\.\*\.attributes\.description | string | 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary\.total\_responses\_retrieved | numeric | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.max_results | numeric |  |   100 
+action_result.data.\*.id | string |  `cofensetirage response id`  |   10 
+action_result.data.\*.relationships.one_clicks.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/responses/1/relationships/one_clicks 
+action_result.data.\*.relationships.one_clicks.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/responses/1/one_clicks 
+action_result.data.\*.attributes.body | string |  |   Body of the email 
+action_result.data.\*.attributes.name | string |  |   Display name of the email 
+action_result.data.\*.attributes.to_other | boolean |  |   False  True 
+action_result.data.\*.attributes.created_at | string |  `date`  |   2021-03-05T02:45:27.398Z 
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2021-03-05T02:45:27.398Z 
+action_result.data.\*.attributes.bcc_address | string |  `email`  |   test@example.com 
+action_result.data.\*.attributes.cc_address | string |  `email`  |   test@example.com 
+action_result.data.\*.attributes.attach_original | boolean |  |   False  True 
+action_result.data.\*.attributes.to_other_address | string |  `email`  |   test@example.com 
+action_result.data.\*.attributes.subject | string |  |   Subject of the email 
+action_result.data.\*.attributes.to_reporter | boolean |  |   False  True 
+action_result.data.\*.attributes.description | string |  |   Description of the email 
+action_result.data.\*.type | string |  |   responses 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/responses/1 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Total responses retrieved: 10 
+action_result.summary.total_responses_retrieved | numeric |  |   1 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'create response'
-Create a response\. This action is supported for Cofense Triage with version older than 1\.23
+Create a response. This action is supported for Cofense Triage with version older than 1.23
 
 Type: **generic**  
 Read only: **False**
@@ -1683,48 +1702,48 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **subject** |  required  | Subject of the response | string | 
 **body** |  required  | Body of the email | string | 
 **description** |  optional  | Description of the response | string | 
-**to\_reporter** |  optional  | To add the reporter to the response recipient list or not | boolean | 
-**to\_other** |  optional  | To add the addresses specified in 'to\_other\_address' to the response recipient list or not | boolean | 
-**to\_other\_address** |  optional  | Comma\-separated list of email addresses to send the response to | string |  `email` 
-**attach\_original** |  optional  | To attach the original email to the response or not | boolean | 
-**cc\_address** |  optional  | Comma\-separated list of email addresses to CC the response to | string |  `email` 
-**bcc\_address** |  optional  | Comma\-separated list of email addresses to BCC the response to | string |  `email` 
+**to_reporter** |  optional  | To add the reporter to the response recipient list or not | boolean | 
+**to_other** |  optional  | To add the addresses specified in 'to_other_address' to the response recipient list or not | boolean | 
+**to_other_address** |  optional  | Comma-separated list of email addresses to send the response to | string |  `email` 
+**attach_original** |  optional  | To attach the original email to the response or not | boolean | 
+**cc_address** |  optional  | Comma-separated list of email addresses to CC the response to | string |  `email` 
+**bcc_address** |  optional  | Comma-separated list of email addresses to BCC the response to | string |  `email` 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.name | string | 
-action\_result\.parameter\.subject | string | 
-action\_result\.parameter\.body | string | 
-action\_result\.parameter\.description | string | 
-action\_result\.parameter\.to\_reporter | boolean | 
-action\_result\.parameter\.to\_other | boolean | 
-action\_result\.parameter\.to\_other\_address | string |  `email` 
-action\_result\.parameter\.attach\_original | boolean | 
-action\_result\.parameter\.cc\_address | string |  `email` 
-action\_result\.parameter\.bcc\_address | string |  `email` 
-action\_result\.data\.\*\.id | string |  `cofensetirage response id` 
-action\_result\.data\.\*\.relationships\.one\_clicks\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.one\_clicks\.links\.related | string |  `url` 
-action\_result\.data\.\*\.attributes\.body | string | 
-action\_result\.data\.\*\.attributes\.name | string | 
-action\_result\.data\.\*\.attributes\.to\_other | boolean | 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.bcc\_address | string |  `email` 
-action\_result\.data\.\*\.attributes\.cc\_address | string |  `email` 
-action\_result\.data\.\*\.attributes\.attach\_original | boolean | 
-action\_result\.data\.\*\.attributes\.to\_other\_address | string |  `email` 
-action\_result\.data\.\*\.attributes\.subject | string | 
-action\_result\.data\.\*\.attributes\.to\_reporter | boolean | 
-action\_result\.data\.\*\.attributes\.description | string | 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary\.response\_id | string |  `cofensetirage response id` 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.name | string |  |   Display name of the response 
+action_result.parameter.subject | string |  |   Subject of the response 
+action_result.parameter.body | string |  |   Body of the response 
+action_result.parameter.description | string |  |   Description of the response 
+action_result.parameter.to_reporter | boolean |  |   False  True 
+action_result.parameter.to_other | boolean |  |   False  True 
+action_result.parameter.to_other_address | string |  `email`  |   test@example.com 
+action_result.parameter.attach_original | boolean |  |   False  True 
+action_result.parameter.cc_address | string |  `email`  |   test@example.com 
+action_result.parameter.bcc_address | string |  `email`  |   test@example.com 
+action_result.data.\*.id | string |  `cofensetirage response id`  |   10 
+action_result.data.\*.relationships.one_clicks.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/responses/1/relationships/one_clicks 
+action_result.data.\*.relationships.one_clicks.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/responses/46/one_clicks 
+action_result.data.\*.attributes.body | string |  |   Body of the response 
+action_result.data.\*.attributes.name | string |  |   Display name of the response 
+action_result.data.\*.attributes.to_other | boolean |  |   False  True 
+action_result.data.\*.attributes.created_at | string |  `date`  |   2021-03-05T02:45:27.398Z 
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2021-03-05T02:45:27.398Z 
+action_result.data.\*.attributes.bcc_address | string |  `email`  |   test@example.com 
+action_result.data.\*.attributes.cc_address | string |  `email`  |   test@example.com 
+action_result.data.\*.attributes.attach_original | boolean |  |   False  True 
+action_result.data.\*.attributes.to_other_address | string |  `email`  |   test@example.com 
+action_result.data.\*.attributes.subject | string |  |   Subject of the response 
+action_result.data.\*.attributes.to_reporter | boolean |  |   False  True 
+action_result.data.\*.attributes.description | string |  |   Description of the response 
+action_result.data.\*.type | string |  |   responses 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/responses/1 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Successfully created the response. 
+action_result.summary.response_id | string |  `cofensetirage response id`  |   10 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'categorize report'
 Categorize a report into the provided category
@@ -1735,26 +1754,26 @@ Read only: **False**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**report\_id** |  required  | The ID of the report | numeric |  `cofensetriage report id` 
-**category\_id** |  optional  | The ID of the category | numeric |  `cofensetriage category id` 
-**category\_name** |  optional  | The name of the category | string |  `cofensetriage category name` 
-**response\_id** |  optional  | The ID of the response | numeric | 
-**categorization\_tags** |  optional  | Allows the user to provide multiple tags to the report while categorizing it | string |  `cofensetriage tag` 
+**report_id** |  required  | The ID of the report | numeric |  `cofensetriage report id` 
+**category_id** |  optional  | The ID of the category | numeric |  `cofensetriage category id` 
+**category_name** |  optional  | The name of the category | string |  `cofensetriage category name` 
+**response_id** |  optional  | The ID of the response | numeric | 
+**categorization_tags** |  optional  | Allows the user to provide multiple tags to the report while categorizing it | string |  `cofensetriage tag` 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.report\_id | numeric |  `cofensetriage report id` 
-action\_result\.parameter\.response\_id | numeric | 
-action\_result\.parameter\.category\_name | string |  `cofensetriage category name` 
-action\_result\.parameter\.category\_id | numeric |  `cofensetriage category id` 
-action\_result\.parameter\.categorization\_tags | string |  `cofensetriage tag` 
-action\_result\.data | string | 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary | string | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.report_id | numeric |  `cofensetriage report id`  |   796 
+action_result.parameter.response_id | numeric |  |   3  10 
+action_result.parameter.category_name | string |  `cofensetriage category name`  |   API-Cluster  spam 
+action_result.parameter.category_id | numeric |  `cofensetriage category id`  |   2 
+action_result.parameter.categorization_tags | string |  `cofensetriage tag`  |   test1, test2 
+action_result.data | string |  |  
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Successfully categorized the report 
+action_result.summary | string |  |  
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'get threat indicators'
 Retrieve threat indicators from the Cofense Triage Platform filtered based on the provided parameters
@@ -1762,7 +1781,7 @@ Retrieve threat indicators from the Cofense Triage Platform filtered based on th
 Type: **investigate**  
 Read only: **True**
 
-If the 'ingest\_subfields' parameter is true, the threat indicator and the subfields together will get ingested into the container\. If no value is provided in any parameter, then all the records will be retrieved\.
+If the 'ingest_subfields' parameter is true, the threat indicator and the subfields together will get ingested into the container. If no value is provided in any parameter, then all the records will be retrieved.
 
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
@@ -1771,55 +1790,55 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **type** |  optional  | Type of the threat indicators | string |  `cofensetriage threat indicator type` 
 **source** |  optional  | Source of the threat indicators | string |  `cofensetriage threat indicator source` 
 **value** |  optional  | Value of the threat indicators | string |  `sha256`  `md5`  `url`  `hash`  `domain`  `host name` 
-**start\_date** |  optional  | Threat indicators updated on or after the provided date | string |  `date` 
-**end\_date** |  optional  | Threat indicators updated before the provided date | string |  `date` 
+**start_date** |  optional  | Threat indicators updated on or after the provided date | string |  `date` 
+**end_date** |  optional  | Threat indicators updated before the provided date | string |  `date` 
 **sort** |  optional  | Sorting based on updated date of threat indicators | string | 
-**ingest\_threat\_indicator** |  optional  | Ingestion of threat indicator\(s\) into the container\(s\) | boolean | 
-**ingest\_subfields** |  optional  | Allow ingestion of the fields relating to the threat indicator into the container | boolean | 
-**label** |  optional  | Allows ingestion of data into the container\(s\) with the provided label\. The label must be valid or the action will fail\. Required if 'ingest\_threat\_indicator' or 'ingest\_subfields' is set | string | 
-**tenant** |  optional  | Allows creation of container\(s\) for the provided tenant ID or tenant name\. The tenant must be valid or the action will fail\. Required if 'ingest\_threat\_indicator' or 'ingest\_subfields' is set | string | 
-**cef\_mapping** |  optional  | JSON dictionary represented as a serialized JSON string | string | 
-**max\_results** |  optional  | Maximum number of results to return | numeric | 
+**ingest_threat_indicator** |  optional  | Ingestion of threat indicator(s) into the container(s) | boolean | 
+**ingest_subfields** |  optional  | Allow ingestion of the fields relating to the threat indicator into the container | boolean | 
+**label** |  optional  | Allows ingestion of data into the container(s) with the provided label. The label must be valid or the action will fail. Required if 'ingest_threat_indicator' or 'ingest_subfields' is set | string | 
+**tenant** |  optional  | Allows creation of container(s) for the provided tenant ID or tenant name. The tenant must be valid or the action will fail. Required if 'ingest_threat_indicator' or 'ingest_subfields' is set | string | 
+**cef_mapping** |  optional  | JSON dictionary represented as a serialized JSON string | string | 
+**max_results** |  optional  | Maximum number of results to return | numeric | 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.level | string |  `cofensetriage threat indicator level` 
-action\_result\.parameter\.type | string |  `cofensetriage threat indicator type` 
-action\_result\.parameter\.source | string |  `cofensetriage threat indicator source` 
-action\_result\.parameter\.value | string |  `sha256`  `md5`  `url`  `hash`  `domain`  `host name` 
-action\_result\.parameter\.start\_date | string |  `date` 
-action\_result\.parameter\.end\_date | string |  `date` 
-action\_result\.parameter\.sort | string | 
-action\_result\.parameter\.ingest\_threat\_indicator | string | 
-action\_result\.parameter\.ingest\_subfields | string | 
-action\_result\.parameter\.label | string | 
-action\_result\.parameter\.tenant | string | 
-action\_result\.parameter\.cef\_mapping | string | 
-action\_result\.parameter\.max\_results | string | 
-action\_result\.data\.\*\.id | string |  `cofensetriage threat indicator id` 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.threat\_type | string |  `cofensetriage threat indicator type` 
-action\_result\.data\.\*\.attributes\.threat\_level | string |  `cofensetriage threat indicator level` 
-action\_result\.data\.\*\.attributes\.threat\_value | string |  `sha256`  `md5`  `url`  `hash`  `domain`  `host name` 
-action\_result\.data\.\*\.attributes\.threat\_source | string |  `cofensetriage threat indicator source` 
-action\_result\.data\.\*\.relationships\.owner\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.owner\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.owner\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.owner\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.reports\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.reports\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.comments\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.comments\.links\.related | string |  `url` 
-action\_result\.data\.\*\.container\_id | numeric |  `container id` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary\.total\_threat\_indicators\_retrieved | numeric | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.level | string |  `cofensetriage threat indicator level`  |   Suspicious 
+action_result.parameter.type | string |  `cofensetriage threat indicator type`  |   url 
+action_result.parameter.source | string |  `cofensetriage threat indicator source`  |   Splunk_Phantom-UI 
+action_result.parameter.value | string |  `sha256`  `md5`  `url`  `hash`  `domain`  `host name`  |   https://exampleurl.com 
+action_result.parameter.start_date | string |  `date`  |   2020-11-18T02:29:07.633Z 
+action_result.parameter.end_date | string |  `date`  |   2020-11-18T02:29:07.633Z 
+action_result.parameter.sort | string |  |   latest_first 
+action_result.parameter.ingest_threat_indicator | boolean |  |   False  True 
+action_result.parameter.ingest_subfields | boolean |  |   False  True 
+action_result.parameter.label | string |  |   events 
+action_result.parameter.tenant | string |  |   0 
+action_result.parameter.cef_mapping | string |  |  
+action_result.parameter.max_results | numeric |  |   100 
+action_result.data.\*.id | string |  `cofensetriage threat indicator id`  |   24 
+action_result.data.\*.type | string |  |   threat_indicators 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/threat_indicators/24 
+action_result.data.\*.attributes.created_at | string |  `date`  |   2020-11-03T19:35:20.636Z 
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2020-11-03T19:35:20.643Z 
+action_result.data.\*.attributes.threat_type | string |  `cofensetriage threat indicator type`  |   URL 
+action_result.data.\*.attributes.threat_level | string |  `cofensetriage threat indicator level`  |   Suspicious 
+action_result.data.\*.attributes.threat_value | string |  `sha256`  `md5`  `url`  `hash`  `domain`  `host name`  |   https://exampleurl.com 
+action_result.data.\*.attributes.threat_source | string |  `cofensetriage threat indicator source`  |   Triage-UI 
+action_result.data.\*.relationships.owner.data.id | string |  |   2 
+action_result.data.\*.relationships.owner.data.type | string |  |   operators 
+action_result.data.\*.relationships.owner.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/threat_indicators/24/relationships/owner 
+action_result.data.\*.relationships.owner.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/threat_indicators/24/owner 
+action_result.data.\*.relationships.reports.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/threat_indicators/24/relationships/reports 
+action_result.data.\*.relationships.reports.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/threat_indicators/24/reports 
+action_result.data.\*.relationships.comments.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/threat_indicators/24/relationships/comments 
+action_result.data.\*.relationships.comments.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/threat_indicators/24/comments 
+action_result.data.\*.container_id | numeric |  `container id`  |   347 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Total threat indicators retrieved: 1 
+action_result.summary.total_threat_indicators_retrieved | numeric |  |   1 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'create threat indicator'
 Create a threat indicator with the provided parameters
@@ -1836,34 +1855,34 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **source** |  optional  | Source of the threat indicator | string |  `cofensetriage threat indicator source` 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.level | string |  `cofensetriage threat indicator level` 
-action\_result\.parameter\.type | string |  `cofensetriage threat indicator type` 
-action\_result\.parameter\.value | string |  `sha256`  `md5`  `url`  `hostname`  `domain`  `hash` 
-action\_result\.parameter\.source | string |  `cofensetriage threat indicator source` 
-action\_result\.data\.\*\.id | string |  `cofensetriage threat indicator id` 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.threat\_type | string |  `cofensetriage threat indicator type` 
-action\_result\.data\.\*\.attributes\.threat\_level | string |  `cofensetriage threat indicator level` 
-action\_result\.data\.\*\.attributes\.threat\_value | string |  `sha256`  `md5`  `url`  `hostname`  `hash`  `domain` 
-action\_result\.data\.\*\.attributes\.threat\_source | string |  `cofensetriage threat indicator source` 
-action\_result\.data\.\*\.relationships\.owner\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.owner\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.owner\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.owner\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.reports\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.reports\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.comments\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.comments\.links\.related | string |  `url` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary\.threat\_indicator\_id | string | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.level | string |  `cofensetriage threat indicator level`  |   Suspicious 
+action_result.parameter.type | string |  `cofensetriage threat indicator type`  |   URL 
+action_result.parameter.value | string |  `sha256`  `md5`  `url`  `hostname`  `domain`  `hash`  |   https://exampleurl.com 
+action_result.parameter.source | string |  `cofensetriage threat indicator source`  |   Splunk_Phantom-UI 
+action_result.data.\*.id | string |  `cofensetriage threat indicator id`  |   209 
+action_result.data.\*.type | string |  |   threat_indicators 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/threat_indicators/209 
+action_result.data.\*.attributes.created_at | string |  `date`  |   2021-03-31T05:13:14.368Z 
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2021-03-31T05:13:14.368Z 
+action_result.data.\*.attributes.threat_type | string |  `cofensetriage threat indicator type`  |   URL 
+action_result.data.\*.attributes.threat_level | string |  `cofensetriage threat indicator level`  |   Suspicious 
+action_result.data.\*.attributes.threat_value | string |  `sha256`  `md5`  `url`  `hostname`  `hash`  `domain`  |   https://exampleurl.com 
+action_result.data.\*.attributes.threat_source | string |  `cofensetriage threat indicator source`  |   Splunk_Phantom-UI 
+action_result.data.\*.relationships.owner.data.id | string |  |   3 
+action_result.data.\*.relationships.owner.data.type | string |  |   oauth_applications 
+action_result.data.\*.relationships.owner.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/threat_indicators/209/relationships/owner 
+action_result.data.\*.relationships.owner.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/threat_indicators/209/owner 
+action_result.data.\*.relationships.reports.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/threat_indicators/209/relationships/reports 
+action_result.data.\*.relationships.reports.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/threat_indicators/209/reports 
+action_result.data.\*.relationships.comments.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/threat_indicators/209/relationships/comments 
+action_result.data.\*.relationships.comments.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/threat_indicators/209/comments 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Successfully created the threat indicator 
+action_result.summary.threat_indicator_id | string |  |   15 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'get reporters'
 Retrieve reporters from the Cofense Triage Platform filtered based on the provided parameters
@@ -1871,44 +1890,44 @@ Retrieve reporters from the Cofense Triage Platform filtered based on the provid
 Type: **investigate**  
 Read only: **True**
 
-If no value is provided in any parameter, then all the records will be retrieved\.
+If no value is provided in any parameter, then all the records will be retrieved.
 
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
 **vip** |  optional  | Allows searching for the VIP reporters | boolean | 
-**reputation\_score** |  optional  | Allows searching for reporters having the provided reputation score\. It allows a comma\-separated list | string |  `cofensetriage reporter reputation score` 
+**reputation_score** |  optional  | Allows searching for reporters having the provided reputation score. It allows a comma-separated list | string |  `cofensetriage reporter reputation score` 
 **email** |  optional  | Allows searching for the reporter with a specific email | string |  `email` 
 **sort** |  optional  | Allows sorting the reporters based on the ID | string | 
-**max\_results** |  optional  | Maximum number of results to return | numeric | 
+**max_results** |  optional  | Maximum number of results to return | numeric | 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.vip | boolean | 
-action\_result\.parameter\.reputation\_score | string |  `cofensetriage reporter reputation score` 
-action\_result\.parameter\.email | string |  `email` 
-action\_result\.parameter\.sort | string | 
-action\_result\.parameter\.max\_results | numeric | 
-action\_result\.data\.\*\.id | string |  `cofensetriage reporter id` 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.data\.\*\.attributes\.vip | boolean | 
-action\_result\.data\.\*\.attributes\.email | string |  `email` 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.reports\_count | numeric | 
-action\_result\.data\.\*\.attributes\.last\_reported\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.reputation\_score | numeric |  `cofensetriage reporter reputation score` 
-action\_result\.data\.\*\.relationships\.reports\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.reports\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.clusters\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.clusters\.links\.related | string |  `url` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary\.total\_reporters\_retrieved | numeric | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.vip | boolean |  |   False  True 
+action_result.parameter.reputation_score | string |  `cofensetriage reporter reputation score`  |   5 
+action_result.parameter.email | string |  `email`  |   test@example.com 
+action_result.parameter.sort | string |  |   oldest_first 
+action_result.parameter.max_results | numeric |  |   100 
+action_result.data.\*.id | string |  `cofensetriage reporter id`  |   4 
+action_result.data.\*.type | string |  |   reporters 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reporters/4 
+action_result.data.\*.attributes.vip | boolean |  |   False  True 
+action_result.data.\*.attributes.email | string |  `email`  |   test@example.com 
+action_result.data.\*.attributes.created_at | string |  `date`  |   2020-10-21T20:54:23.383Z 
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2020-12-11T13:33:53.457Z 
+action_result.data.\*.attributes.reports_count | numeric |  |   10 
+action_result.data.\*.attributes.last_reported_at | string |  `date`  |   2020-12-11T05:46:39.000Z 
+action_result.data.\*.attributes.reputation_score | numeric |  `cofensetriage reporter reputation score`  |   13 
+action_result.data.\*.relationships.reports.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reporters/4/relationships/reports 
+action_result.data.\*.relationships.reports.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reporters/4/reports 
+action_result.data.\*.relationships.clusters.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reporters/4/relationships/clusters 
+action_result.data.\*.relationships.clusters.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reporters/4/clusters 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Total reporters retrieved: 2 
+action_result.summary.total_reporters_retrieved | numeric |  |   96 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'get reporter'
 Retrieve a reporter from the Cofense Triage Platform for the provided reporter ID
@@ -1919,31 +1938,31 @@ Read only: **True**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**reporter\_id** |  required  | The unique ID of the reporter | numeric |  `cofensetriage reporter id` 
+**reporter_id** |  required  | The unique ID of the reporter | numeric |  `cofensetriage reporter id` 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.reporter\_id | numeric |  `cofensetriage reporter id` 
-action\_result\.data\.\*\.id | string |  `cofensetriage reporter id` 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.data\.\*\.attributes\.vip | boolean | 
-action\_result\.data\.\*\.attributes\.email | string |  `email` 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.reports\_count | numeric | 
-action\_result\.data\.\*\.attributes\.last\_reported\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.reputation\_score | numeric |  `cofensetriage reporter reputation score` 
-action\_result\.data\.\*\.relationships\.reports\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.reports\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.clusters\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.clusters\.links\.related | string |  `url` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary | string | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.reporter_id | numeric |  `cofensetriage reporter id`  |   4 
+action_result.data.\*.id | string |  `cofensetriage reporter id`  |   4 
+action_result.data.\*.type | string |  |   reporters 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reporters/4 
+action_result.data.\*.attributes.vip | boolean |  |   False  True 
+action_result.data.\*.attributes.email | string |  `email`  |   test@example.com 
+action_result.data.\*.attributes.created_at | string |  `date`  |   2020-10-21T20:54:23.383Z 
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2020-12-11T13:33:53.457Z 
+action_result.data.\*.attributes.reports_count | numeric |  |   10 
+action_result.data.\*.attributes.last_reported_at | string |  `date`  |   2020-12-11T05:46:39.000Z 
+action_result.data.\*.attributes.reputation_score | numeric |  `cofensetriage reporter reputation score`  |   13 
+action_result.data.\*.relationships.reports.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reporters/4/relationships/reports 
+action_result.data.\*.relationships.reports.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reporters/4/reports 
+action_result.data.\*.relationships.clusters.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reporters/4/relationships/clusters 
+action_result.data.\*.relationships.clusters.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reporters/4/clusters 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Successfully retrieved the reporter 
+action_result.summary | string |  |  
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'get urls'
 Retrieve URLs from the Cofense Triage Platform filtered based on the provided parameters
@@ -1951,49 +1970,49 @@ Retrieve URLs from the Cofense Triage Platform filtered based on the provided pa
 Type: **investigate**  
 Read only: **True**
 
-If no value is provided in any parameter, then all the records will be retrieved\.
+If no value is provided in any parameter, then all the records will be retrieved.
 
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**risk\_score** |  optional  | Risk score of the URL | numeric |  `cofensetriage risk score` 
-**risk\_score\_operator** |  optional  | Operator to work with the risk score parameter | string | 
-**url\_value** |  optional  | Value of the URL to search for | string |  `url` 
-**start\_date** |  optional  | Allows filtering the URLs updated on or after the provided date | string |  `date` 
-**end\_date** |  optional  | Allows filtering the URLs updated before the provided date | string |  `date` 
-**sort** |  optional  | Allows sorting the URLs based on the 'updated\_at' date | string | 
-**max\_results** |  optional  | Maximum number of results to return | numeric | 
+**risk_score** |  optional  | Risk score of the URL | numeric |  `cofensetriage risk score` 
+**risk_score_operator** |  optional  | Operator to work with the risk score parameter | string | 
+**url_value** |  optional  | Value of the URL to search for | string |  `url` 
+**start_date** |  optional  | Allows filtering the URLs updated on or after the provided date | string |  `date` 
+**end_date** |  optional  | Allows filtering the URLs updated before the provided date | string |  `date` 
+**sort** |  optional  | Allows sorting the URLs based on the 'updated_at' date | string | 
+**max_results** |  optional  | Maximum number of results to return | numeric | 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.risk\_score | numeric |  `cofensetriage risk score` 
-action\_result\.parameter\.risk\_score\_operator | string | 
-action\_result\.parameter\.url\_value | string |  `url` 
-action\_result\.parameter\.start\_date | string |  `date` 
-action\_result\.parameter\.end\_date | string |  `date` 
-action\_result\.parameter\.sort | string | 
-action\_result\.parameter\.max\_results | numeric | 
-action\_result\.data\.\*\.id | string |  `cofensetriage url id` 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.data\.\*\.attributes\.url | string |  `url` 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.risk\_score | string |  `cofensetriage risk score` 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.relationships\.reports\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.reports\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.clusters\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.clusters\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.hostname\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.hostname\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.hostname\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.hostname\.links\.related | string |  `url` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary\.total\_urls\_retrieved | numeric | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.risk_score | numeric |  `cofensetriage risk score`  |   2 
+action_result.parameter.risk_score_operator | string |  |   eq 
+action_result.parameter.url_value | string |  `url`  |   http://testurl.com 
+action_result.parameter.start_date | string |  `date`  |   2021-03-5 11:20:00 
+action_result.parameter.end_date | string |  `date`  |   2021-03-11 01:20:00 
+action_result.parameter.sort | string |  |   oldest_first 
+action_result.parameter.max_results | numeric |  |   100 
+action_result.data.\*.id | string |  `cofensetriage url id`  |   15 
+action_result.data.\*.type | string |  |   urls 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/urls/15 
+action_result.data.\*.attributes.url | string |  `url`  |   http://testurl.com 
+action_result.data.\*.attributes.created_at | string |  `date`  |   2020-10-21T20:54:24.185Z 
+action_result.data.\*.attributes.risk_score | string |  `cofensetriage risk score`  |  
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2020-10-21T20:54:24.185Z 
+action_result.data.\*.relationships.reports.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/urls/15/relationships/reports 
+action_result.data.\*.relationships.reports.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/urls/15/reports 
+action_result.data.\*.relationships.clusters.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/urls/15/relationships/clusters 
+action_result.data.\*.relationships.clusters.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/urls/15/clusters 
+action_result.data.\*.relationships.hostname.data.id | string |  |   6 
+action_result.data.\*.relationships.hostname.data.type | string |  |   hostnames 
+action_result.data.\*.relationships.hostname.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/urls/15/relationships/hostname 
+action_result.data.\*.relationships.hostname.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/urls/15/hostname 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Total URLs retrieved: 2 
+action_result.summary.total_urls_retrieved | numeric |  |   100 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'get url'
 Retrieve a URL from the Cofense Triage Platform for the provided URL ID
@@ -2004,32 +2023,32 @@ Read only: **True**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**url\_id** |  required  | ID of the URL | numeric |  `cofensetriage url id` 
+**url_id** |  required  | ID of the URL | numeric |  `cofensetriage url id` 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.url\_id | numeric |  `cofensetriage url id` 
-action\_result\.data\.\*\.id | string |  `cofensetriage url id` 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.data\.\*\.attributes\.url | string |  `url` 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.risk\_score | string |  `cofensetriage risk score` 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.relationships\.reports\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.reports\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.clusters\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.clusters\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.hostname\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.hostname\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.hostname\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.hostname\.links\.related | string |  `url` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary | string | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.url_id | numeric |  `cofensetriage url id`  |   15 
+action_result.data.\*.id | string |  `cofensetriage url id`  |   15 
+action_result.data.\*.type | string |  |   urls 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/urls/15 
+action_result.data.\*.attributes.url | string |  `url`  |   http://testurl.com 
+action_result.data.\*.attributes.created_at | string |  `date`  |   2020-10-21T20:54:24.185Z 
+action_result.data.\*.attributes.risk_score | string |  `cofensetriage risk score`  |  
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2020-10-21T20:54:24.185Z 
+action_result.data.\*.relationships.reports.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/urls/15/relationships/reports 
+action_result.data.\*.relationships.reports.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/urls/15/reports 
+action_result.data.\*.relationships.clusters.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/urls/15/relationships/clusters 
+action_result.data.\*.relationships.clusters.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/urls/15/clusters 
+action_result.data.\*.relationships.hostname.data.id | string |  |   6 
+action_result.data.\*.relationships.hostname.data.type | string |  |   hostnames 
+action_result.data.\*.relationships.hostname.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/urls/15/relationships/hostname 
+action_result.data.\*.relationships.hostname.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/urls/15/hostname 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Successfully retrieved the URL 
+action_result.summary | string |  |  
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'get comments'
 Retrieve comments from the Cofense Triage Platform filtered based on the provided parameters
@@ -2037,88 +2056,88 @@ Retrieve comments from the Cofense Triage Platform filtered based on the provide
 Type: **investigate**  
 Read only: **True**
 
-If no value is provided in any parameter, then all the records will be retrieved\.
+If no value is provided in any parameter, then all the records will be retrieved.
 
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**body\_format** |  optional  | Allows filtering the comments based on the format of the comment body | string |  `cofensetriage comment body format` 
-**tags** |  optional  | Allows filtering the comments based on the list of comma\-separated tags\. If the tag value contains a comma, enclose it in double\-quotes \(Example\: tag1,"test,tag",tag2\) | string |  `cofensetriage tag` 
-**start\_date** |  optional  | Allows filtering the comments updated on or after the provided date | string |  `date` 
-**end\_date** |  optional  | Allows filtering the comments updated before the provided date | string |  `date` 
-**sort** |  optional  | Allows sorting the comments based on the 'updated\_at' date of the comment | string | 
-**max\_results** |  optional  | Maximum number of results to return | numeric | 
+**body_format** |  optional  | Allows filtering the comments based on the format of the comment body | string |  `cofensetriage comment body format` 
+**tags** |  optional  | Allows filtering the comments based on the list of comma-separated tags. If the tag value contains a comma, enclose it in double-quotes (Example: tag1,"test,tag",tag2) | string |  `cofensetriage tag` 
+**start_date** |  optional  | Allows filtering the comments updated on or after the provided date | string |  `date` 
+**end_date** |  optional  | Allows filtering the comments updated before the provided date | string |  `date` 
+**sort** |  optional  | Allows sorting the comments based on the 'updated_at' date of the comment | string | 
+**max_results** |  optional  | Maximum number of results to return | numeric | 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.body\_format | string |  `cofensetriage comment body format` 
-action\_result\.parameter\.tags | string |  `cofensetriage tag` 
-action\_result\.parameter\.start\_date | string |  `date` 
-action\_result\.parameter\.end\_date | string |  `date` 
-action\_result\.parameter\.sort | string | 
-action\_result\.parameter\.max\_results | numeric | 
-action\_result\.data\.\*\.id | string |  `cofensetriage comment id` 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.data\.\*\.attributes\.body | string | 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.body\_format | string |  `cofensetriage comment body format` 
-action\_result\.data\.\*\.relationships\.owner\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.owner\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.owner\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.owner\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.commentable\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.commentable\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.commentable\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.commentable\.links\.related | string |  `url` 
-action\_result\.data\.\*\.attributes\.body\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.from\.type | string |  `email` 
-action\_result\.data\.\*\.attributes\.body\.properties\.notes\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.brands\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.brands\.items\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.srctag\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.sent\_to\.type | string |  `email` 
-action\_result\.data\.\*\.attributes\.body\.properties\.subject\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.summary\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.reply\_to\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.report\_id\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.message\_id\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.phenotypes\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.report\_url\.type | string |  `url` 
-action\_result\.data\.\*\.attributes\.body\.properties\.reported\_by\.type | string |  `email` 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_1\_iocs\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_1\_iocs\.properties\.files\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_1\_iocs\.properties\.infection\_ips\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_1\_iocs\.properties\.infection\_ips\.items\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_1\_iocs\.properties\.infection\_urls\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_1\_iocs\.properties\.infection\_urls\.items\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.md5\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.size\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.files\.type | string |  `file name` 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.c2\_ips\.type | string |  `ip` 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.c2\_urls\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.payload\_ips\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.payload\_ips\.items\.type | string |  `ip` 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.payload\_urls\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.payload\_urls\.items\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.received\_time\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.reported\_time\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.vision\_results\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.vision\_results\.properties\.results\_id | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.vision\_results\.properties\.query\_created\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.vision\_results\.properties\.messages\_found | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.vision\_results\.properties\.messages\_removed | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.escalation\_type\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.malware\_families\.type | string | 
-action\_result\.data\.\*\.attributes\.tags | string |  `cofensetriage tag` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary\.total\_comments\_retrieved | numeric | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.body_format | string |  `cofensetriage comment body format`  |   text 
+action_result.parameter.tags | string |  `cofensetriage tag`  |   test 
+action_result.parameter.start_date | string |  `date`  |   2021-03-5 11:20:00 
+action_result.parameter.end_date | string |  `date`  |   2021-03-11 01:20:00 
+action_result.parameter.sort | string |  |   oldest_first  latest_first 
+action_result.parameter.max_results | numeric |  |   5 
+action_result.data.\*.id | string |  `cofensetriage comment id`  |   15 
+action_result.data.\*.type | string |  |   comments 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/comments/1 
+action_result.data.\*.attributes.body | string |  |  
+action_result.data.\*.attributes.created_at | string |  `date`  |   2021-04-01T20:52:59.342Z 
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2021-04-01T20:52:59.342Z 
+action_result.data.\*.attributes.body_format | string |  `cofensetriage comment body format`  |   text 
+action_result.data.\*.relationships.owner.data.id | string |  |   2 
+action_result.data.\*.relationships.owner.data.type | string |  |   operators 
+action_result.data.\*.relationships.owner.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/comments/1/relationships/owner 
+action_result.data.\*.relationships.owner.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/comments/1/owner 
+action_result.data.\*.relationships.commentable.data.id | string |  |   216 
+action_result.data.\*.relationships.commentable.data.type | string |  |   threat indicator 
+action_result.data.\*.relationships.commentable.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/comments/1/relationships/commentable 
+action_result.data.\*.relationships.commentable.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/comments/1/commentable 
+action_result.data.\*.attributes.body.type | string |  |   object 
+action_result.data.\*.attributes.body.properties.from.type | string |  `email`  |   test@example.net 
+action_result.data.\*.attributes.body.properties.notes.type | string |  |  
+action_result.data.\*.attributes.body.properties.brands.type | string |  |   array 
+action_result.data.\*.attributes.body.properties.brands.items.type | string |  |   string 
+action_result.data.\*.attributes.body.properties.srctag.type | string |  |   Test 
+action_result.data.\*.attributes.body.properties.sent_to.type | string |  `email`  |   test@example.com 
+action_result.data.\*.attributes.body.properties.subject.type | string |  |  
+action_result.data.\*.attributes.body.properties.summary.type | string |  |  
+action_result.data.\*.attributes.body.properties.reply_to.type | string |  |  
+action_result.data.\*.attributes.body.properties.report_id.type | string |  |   804 
+action_result.data.\*.attributes.body.properties.message_id.type | string |  |  
+action_result.data.\*.attributes.body.properties.phenotypes.type | string |  |  
+action_result.data.\*.attributes.body.properties.report_url.type | string |  `url`  |   https://cofensetriageurl.com/reports/804 
+action_result.data.\*.attributes.body.properties.reported_by.type | string |  `email`  |   test@example.com 
+action_result.data.\*.attributes.body.properties.stage_1_iocs.type | string |  |   object 
+action_result.data.\*.attributes.body.properties.stage_1_iocs.properties.files.type | string |  |   subscription.xlsb 
+action_result.data.\*.attributes.body.properties.stage_1_iocs.properties.infection_ips.type | string |  |   array 
+action_result.data.\*.attributes.body.properties.stage_1_iocs.properties.infection_ips.items.type | string |  |   string 
+action_result.data.\*.attributes.body.properties.stage_1_iocs.properties.infection_urls.type | string |  |   array 
+action_result.data.\*.attributes.body.properties.stage_1_iocs.properties.infection_urls.items.type | string |  |   https://example.org 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.type | string |  |   object 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.md5.type | string |  |   af18cd9e099e6e7c56bd5a07502b1f0z 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.size.type | string |  |   37,888 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.files.type | string |  `file name`  |   172.dll 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.c2_ips.type | string |  `ip`  |   33.162.31.92 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.c2_urls.type | string |  |   http://example.net 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.payload_ips.type | string |  |   array 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.payload_ips.items.type | string |  `ip`  |   55.220.162.4 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.payload_urls.type | string |  |   array 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.payload_urls.items.type | string |  |   http://example.com 
+action_result.data.\*.attributes.body.properties.received_time.type | string |  |   Mar 31, 2021 at 14:40:13 UTC 
+action_result.data.\*.attributes.body.properties.reported_time.type | string |  |   Mar 31, 2021 at 14:40:45 UTC 
+action_result.data.\*.attributes.body.properties.vision_results.type | string |  |   object 
+action_result.data.\*.attributes.body.properties.vision_results.properties.results_id | string |  |   61 
+action_result.data.\*.attributes.body.properties.vision_results.properties.query_created.type | string |  |   Apr 2, 2021 at 14:37:35 UTC 
+action_result.data.\*.attributes.body.properties.vision_results.properties.messages_found | string |  |   2 
+action_result.data.\*.attributes.body.properties.vision_results.properties.messages_removed | string |  |   0 
+action_result.data.\*.attributes.body.properties.escalation_type.type | string |  |  
+action_result.data.\*.attributes.body.properties.malware_families.type | string |  |  
+action_result.data.\*.attributes.tags | string |  `cofensetriage tag`  |   TEST 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Total comments retrieved: 16 
+action_result.summary.total_comments_retrieved | numeric |  |   16 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'get comment'
 Retrieve a comment from the Cofense Triage Platform for the provided comment ID
@@ -2129,73 +2148,73 @@ Read only: **True**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**comment\_id** |  required  | ID of the comment | numeric |  `cofensetriage comment id` 
+**comment_id** |  required  | ID of the comment | numeric |  `cofensetriage comment id` 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.comment\_id | numeric |  `cofensetriage comment id` 
-action\_result\.data\.\*\.id | string |  `cofensetriage comment id` 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.data\.\*\.attributes\.body | string | 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.body\_format | string |  `cofensetriage comment body format` 
-action\_result\.data\.\*\.relationships\.owner\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.owner\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.owner\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.owner\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.commentable\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.commentable\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.commentable\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.commentable\.links\.related | string |  `url` 
-action\_result\.data\.\*\.attributes\.body\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.from\.type | string |  `email` 
-action\_result\.data\.\*\.attributes\.body\.properties\.notes\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.brands\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.brands\.items\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.srctag\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.sent\_to\.type | string |  `email` 
-action\_result\.data\.\*\.attributes\.body\.properties\.subject\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.summary\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.reply\_to\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.report\_id\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.message\_id\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.phenotypes\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.report\_url\.type | string |  `url` 
-action\_result\.data\.\*\.attributes\.body\.properties\.reported\_by\.type | string |  `email` 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_1\_iocs\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_1\_iocs\.properties\.files\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_1\_iocs\.properties\.infection\_ips\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_1\_iocs\.properties\.infection\_ips\.items\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_1\_iocs\.properties\.infection\_urls\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_1\_iocs\.properties\.infection\_urls\.items\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.md5\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.size\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.files\.type | string |  `file name` 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.c2\_ips\.type | string |  `ip` 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.c2\_urls\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.payload\_ips\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.payload\_ips\.items\.type | string |  `ip` 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.payload\_urls\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.stage\_2\_iocs\.properties\.payload\_urls\.items\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.received\_time\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.reported\_time\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.vision\_results\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.vision\_results\.properties\.results\_id | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.vision\_results\.properties\.query\_created\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.vision\_results\.properties\.messages\_found | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.vision\_results\.properties\.messages\_removed | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.escalation\_type\.type | string | 
-action\_result\.data\.\*\.attributes\.body\.properties\.malware\_families\.type | string | 
-action\_result\.data\.\*\.attributes\.tags | string |  `cofensetriage tag` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary | string | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.comment_id | numeric |  `cofensetriage comment id`  |   15 
+action_result.data.\*.id | string |  `cofensetriage comment id`  |   15 
+action_result.data.\*.type | string |  |   comments 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/comments/1 
+action_result.data.\*.attributes.body | string |  |   Test comment 
+action_result.data.\*.attributes.created_at | string |  `date`  |   2021-04-01T20:52:59.342Z 
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2021-04-01T20:52:59.342Z 
+action_result.data.\*.attributes.body_format | string |  `cofensetriage comment body format`  |   text 
+action_result.data.\*.relationships.owner.data.id | string |  |   2 
+action_result.data.\*.relationships.owner.data.type | string |  |   operators 
+action_result.data.\*.relationships.owner.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/comments/1/relationships/owner 
+action_result.data.\*.relationships.owner.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/comments/1/owner 
+action_result.data.\*.relationships.commentable.data.id | string |  |   216 
+action_result.data.\*.relationships.commentable.data.type | string |  |   threat indicator 
+action_result.data.\*.relationships.commentable.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/comments/1/relationships/commentable 
+action_result.data.\*.relationships.commentable.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/comments/1/commentable 
+action_result.data.\*.attributes.body.type | string |  |   object 
+action_result.data.\*.attributes.body.properties.from.type | string |  `email`  |   test@example.net 
+action_result.data.\*.attributes.body.properties.notes.type | string |  |  
+action_result.data.\*.attributes.body.properties.brands.type | string |  |   array 
+action_result.data.\*.attributes.body.properties.brands.items.type | string |  |   string 
+action_result.data.\*.attributes.body.properties.srctag.type | string |  |   Test 
+action_result.data.\*.attributes.body.properties.sent_to.type | string |  `email`  |   test@example.com 
+action_result.data.\*.attributes.body.properties.subject.type | string |  |  
+action_result.data.\*.attributes.body.properties.summary.type | string |  |  
+action_result.data.\*.attributes.body.properties.reply_to.type | string |  |  
+action_result.data.\*.attributes.body.properties.report_id.type | string |  |   804 
+action_result.data.\*.attributes.body.properties.message_id.type | string |  |  
+action_result.data.\*.attributes.body.properties.phenotypes.type | string |  |  
+action_result.data.\*.attributes.body.properties.report_url.type | string |  `url`  |   https://cofensetriageurl.com/reports/804 
+action_result.data.\*.attributes.body.properties.reported_by.type | string |  `email`  |   test@example.com 
+action_result.data.\*.attributes.body.properties.stage_1_iocs.type | string |  |   object 
+action_result.data.\*.attributes.body.properties.stage_1_iocs.properties.files.type | string |  |   subscription.xlsb 
+action_result.data.\*.attributes.body.properties.stage_1_iocs.properties.infection_ips.type | string |  |   array 
+action_result.data.\*.attributes.body.properties.stage_1_iocs.properties.infection_ips.items.type | string |  |   string 
+action_result.data.\*.attributes.body.properties.stage_1_iocs.properties.infection_urls.type | string |  |   array 
+action_result.data.\*.attributes.body.properties.stage_1_iocs.properties.infection_urls.items.type | string |  |   https://example.org 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.type | string |  |   object 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.md5.type | string |  |   af18cd9e099e6e7c56bd5a07502b1f0z 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.size.type | string |  |   37,888 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.files.type | string |  `file name`  |   172.dll 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.c2_ips.type | string |  `ip`  |   33.162.31.92 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.c2_urls.type | string |  |   http://example.net 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.payload_ips.type | string |  |   array 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.payload_ips.items.type | string |  `ip`  |   55.220.162.4 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.payload_urls.type | string |  |   array 
+action_result.data.\*.attributes.body.properties.stage_2_iocs.properties.payload_urls.items.type | string |  |   http://example.com 
+action_result.data.\*.attributes.body.properties.received_time.type | string |  |   Mar 31, 2021 at 14:40:13 UTC 
+action_result.data.\*.attributes.body.properties.reported_time.type | string |  |   Mar 31, 2021 at 14:40:45 UTC 
+action_result.data.\*.attributes.body.properties.vision_results.type | string |  |   object 
+action_result.data.\*.attributes.body.properties.vision_results.properties.results_id | string |  |   61 
+action_result.data.\*.attributes.body.properties.vision_results.properties.query_created.type | string |  |   Apr 2, 2021 at 14:37:35 UTC 
+action_result.data.\*.attributes.body.properties.vision_results.properties.messages_found | string |  |   2 
+action_result.data.\*.attributes.body.properties.vision_results.properties.messages_removed | string |  |   0 
+action_result.data.\*.attributes.body.properties.escalation_type.type | string |  |  
+action_result.data.\*.attributes.body.properties.malware_families.type | string |  |  
+action_result.data.\*.attributes.tags | string |  `cofensetriage tag`  |   TEST 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Successfully retrieved the comment 
+action_result.summary | string |  |  
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'get rules'
 Retrieve rules from the Cofense Triage Platform filtered based on the provided parameters
@@ -2203,7 +2222,7 @@ Retrieve rules from the Cofense Triage Platform filtered based on the provided p
 Type: **investigate**  
 Read only: **True**
 
-If no value is provided in any parameter, then all the records will be retrieved\.
+If no value is provided in any parameter, then all the records will be retrieved.
 
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
@@ -2211,72 +2230,72 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **name** |  optional  | Allows filtering the rules based on the name | string |  `cofensetriage rule name` 
 **description** |  optional  | Allows filtering the rules based on the description | string |  `cofensetriage rule description` 
 **priority** |  optional  | Allows filtering the rules based on the priority | numeric |  `cofensetriage priority` 
-**tags** |  optional  | Allows filtering the rules based on the list of comma\-separated tags\. If the tag value contains a comma, enclose it in double\-quotes \(Example\: tag1,"test,tag",tag2\) | string |  `cofensetriage tag` 
+**tags** |  optional  | Allows filtering the rules based on the list of comma-separated tags. If the tag value contains a comma, enclose it in double-quotes (Example: tag1,"test,tag",tag2) | string |  `cofensetriage tag` 
 **scope** |  optional  | Allows filtering the rules based on the scope | string |  `cofensetriage rule scope` 
-**author\_name** |  optional  | Allows filtering the rules based on the author name | string |  `cofensetriage rule author name` 
-**rule\_context** |  optional  | Allows filtering the rules based on the context | string |  `cofensetriage rule context` 
+**author_name** |  optional  | Allows filtering the rules based on the author name | string |  `cofensetriage rule author name` 
+**rule_context** |  optional  | Allows filtering the rules based on the context | string |  `cofensetriage rule context` 
 **active** |  optional  | Allows filtering the rules based on the status | boolean | 
-**reports\_count** |  optional  | Allows filtering the rules based on the number of reports the rule matched | numeric |  `cofensetriage rule reports count` 
-**reports\_count\_operator** |  optional  | Operator to work with the reports count parameter | string | 
-**start\_date** |  optional  | Allows filtering the rules updated on or after the provided date | string |  `date` 
-**end\_date** |  optional  | Allows filtering the rules updated before the provided date | string |  `date` 
-**sort** |  optional  | Allows sorting the rules based on the 'updated\_at' date of the rule | string | 
-**max\_results** |  optional  | Maximum number of results to return | numeric | 
+**reports_count** |  optional  | Allows filtering the rules based on the number of reports the rule matched | numeric |  `cofensetriage rule reports count` 
+**reports_count_operator** |  optional  | Operator to work with the reports count parameter | string | 
+**start_date** |  optional  | Allows filtering the rules updated on or after the provided date | string |  `date` 
+**end_date** |  optional  | Allows filtering the rules updated before the provided date | string |  `date` 
+**sort** |  optional  | Allows sorting the rules based on the 'updated_at' date of the rule | string | 
+**max_results** |  optional  | Maximum number of results to return | numeric | 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.name | string |  `cofensetriage rule name` 
-action\_result\.parameter\.description | string |  `cofensetriage rule description` 
-action\_result\.parameter\.priority | numeric |  `cofensetriage priority` 
-action\_result\.parameter\.tags | string |  `cofensetriage tag` 
-action\_result\.parameter\.scope | string |  `cofensetriage rule scope` 
-action\_result\.parameter\.author\_name | string |  `cofensetriage rule author name` 
-action\_result\.parameter\.rule\_context | string |  `cofensetriage rule context` 
-action\_result\.parameter\.active | boolean | 
-action\_result\.parameter\.reports\_count | numeric |  `cofensetriage rule reports count` 
-action\_result\.parameter\.reports\_count\_operator | string | 
-action\_result\.parameter\.start\_date | string |  `date` 
-action\_result\.parameter\.end\_date | string |  `date` 
-action\_result\.parameter\.sort | string | 
-action\_result\.parameter\.max\_results | numeric | 
-action\_result\.data\.\*\.id | string |  `cofensetriage rule id` 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.data\.\*\.attributes\.name | string |  `cofensetriage rule name` 
-action\_result\.data\.\*\.attributes\.scope | string |  `cofensetriage rule scope` 
-action\_result\.data\.\*\.attributes\.active | boolean | 
-action\_result\.data\.\*\.attributes\.content | string | 
-action\_result\.data\.\*\.attributes\.priority | numeric |  `cofensetriage priority` 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.author\_name | string |  `cofensetriage rule author name` 
-action\_result\.data\.\*\.attributes\.description | string |  `cofensetriage rule description` 
-action\_result\.data\.\*\.attributes\.imported\_at | string | 
-action\_result\.data\.\*\.attributes\.rule\_context | string |  `cofensetriage rule context` 
-action\_result\.data\.\*\.attributes\.time\_to\_live | string | 
-action\_result\.data\.\*\.attributes\.reports\_count | numeric |  `cofensetriage rule reports count` 
-action\_result\.data\.\*\.attributes\.share\_with\_cofense | boolean | 
-action\_result\.data\.\*\.relationships\.owner\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.owner\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.owner\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.owner\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.reports\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.reports\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.clusters\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.clusters\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.report\_context\.data | string | 
-action\_result\.data\.\*\.relationships\.report\_context\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.report\_context\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.cluster\_context\.data | string | 
-action\_result\.data\.\*\.relationships\.cluster\_context\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.cluster\_context\.links\.related | string |  `url` 
-action\_result\.data\.\*\.attributes\.tags | string |  `cofensetriage tag` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary\.total\_rules\_retrieved | numeric | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.name | string |  `cofensetriage rule name`  |   test 
+action_result.parameter.description | string |  `cofensetriage rule description`  |   test 
+action_result.parameter.priority | numeric |  `cofensetriage priority`  |   1 
+action_result.parameter.tags | string |  `cofensetriage tag`  |   test 
+action_result.parameter.scope | string |  `cofensetriage rule scope`  |   Email 
+action_result.parameter.author_name | string |  `cofensetriage rule author name`  |   author1 
+action_result.parameter.rule_context | string |  `cofensetriage rule context`  |   Internal safe 
+action_result.parameter.active | boolean |  |   True  False 
+action_result.parameter.reports_count | numeric |  `cofensetriage rule reports count`  |   10 
+action_result.parameter.reports_count_operator | string |  |   eq 
+action_result.parameter.start_date | string |  `date`  |   2021-03-5 11:20:00 
+action_result.parameter.end_date | string |  `date`  |   2021-03-11 01:20:00 
+action_result.parameter.sort | string |  |   oldest_first  latest_first 
+action_result.parameter.max_results | numeric |  |   5 
+action_result.data.\*.id | string |  `cofensetriage rule id`  |   1690 
+action_result.data.\*.type | string |  |   rules 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/1690 
+action_result.data.\*.attributes.name | string |  `cofensetriage rule name`  |   MX_Testing 
+action_result.data.\*.attributes.scope | string |  `cofensetriage rule scope`  |   Email 
+action_result.data.\*.attributes.active | boolean |  |   True  False 
+action_result.data.\*.attributes.content | string |  |  
+action_result.data.\*.attributes.priority | numeric |  `cofensetriage priority`  |   5 
+action_result.data.\*.attributes.created_at | string |  `date`  |   2020-11-24T15:19:12.616Z 
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2020-11-24T15:19:12.616Z 
+action_result.data.\*.attributes.author_name | string |  `cofensetriage rule author name`  |   author1 
+action_result.data.\*.attributes.description | string |  `cofensetriage rule description`  |   Test description 
+action_result.data.\*.attributes.imported_at | string |  |  
+action_result.data.\*.attributes.rule_context | string |  `cofensetriage rule context`  |   Phishing Tactic 
+action_result.data.\*.attributes.time_to_live | string |  |   Forever 
+action_result.data.\*.attributes.reports_count | numeric |  `cofensetriage rule reports count`  |   1 
+action_result.data.\*.attributes.share_with_cofense | boolean |  |   False  True 
+action_result.data.\*.relationships.owner.data.id | string |  |   2 
+action_result.data.\*.relationships.owner.data.type | string |  |   operators 
+action_result.data.\*.relationships.owner.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/1690/relationships/owner 
+action_result.data.\*.relationships.owner.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/1690/owner 
+action_result.data.\*.relationships.reports.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/1690/relationships/reports 
+action_result.data.\*.relationships.reports.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/1690/reports 
+action_result.data.\*.relationships.clusters.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/1690/relationships/clusters 
+action_result.data.\*.relationships.clusters.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/1690/clusters 
+action_result.data.\*.relationships.report_context.data | string |  |  
+action_result.data.\*.relationships.report_context.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/1690/relationships/report_context 
+action_result.data.\*.relationships.report_context.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/1690/report_context 
+action_result.data.\*.relationships.cluster_context.data | string |  |  
+action_result.data.\*.relationships.cluster_context.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/1690/relationships/cluster_context 
+action_result.data.\*.relationships.cluster_context.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/1690/cluster_context 
+action_result.data.\*.attributes.tags | string |  `cofensetriage tag`  |   TEST 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Total rules retrieved: 3 
+action_result.summary.total_rules_retrieved | numeric |  |   3 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'get rule'
 Retrieve a rule from the Cofense Triage Platform for the provided rule ID
@@ -2284,119 +2303,119 @@ Retrieve a rule from the Cofense Triage Platform for the provided rule ID
 Type: **investigate**  
 Read only: **True**
 
-If the 'ingest\_subfields' parameter is true, the report and the subfields together will get ingested into the container\.
+If the 'ingest_subfields' parameter is true, the report and the subfields together will get ingested into the container.
 
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**rule\_id** |  required  | ID of the rule | numeric |  `cofensetriage rule id` 
-**ingest\_report** |  optional  | Allows ingestion of the reports related to the rule into the container | boolean | 
-**ingest\_subfields** |  optional  | Allows ingestion of fields relating to the report into the container | boolean | 
-**label** |  optional  | Allows ingestion of data into the container\(s\) with the provided label\. The label must be valid or the action will fail\. Required if 'ingest\_report' or 'ingest\_subfields' is set | string | 
-**tenant** |  optional  | Allows creation of container\(s\) for the provided tenant ID or tenant name\. The tenant must be valid or the action will fail\. Required if 'ingest\_report' or 'ingest\_subfields' is set | string | 
-**cef\_mapping** |  optional  | JSON dictionary represented as a serialized JSON string\. Each key in the dictionary is a potential key name in an artifact that is to be renamed to the value | string | 
+**rule_id** |  required  | ID of the rule | numeric |  `cofensetriage rule id` 
+**ingest_report** |  optional  | Allows ingestion of the reports related to the rule into the container | boolean | 
+**ingest_subfields** |  optional  | Allows ingestion of fields relating to the report into the container | boolean | 
+**label** |  optional  | Allows ingestion of data into the container(s) with the provided label. The label must be valid or the action will fail. Required if 'ingest_report' or 'ingest_subfields' is set | string | 
+**tenant** |  optional  | Allows creation of container(s) for the provided tenant ID or tenant name. The tenant must be valid or the action will fail. Required if 'ingest_report' or 'ingest_subfields' is set | string | 
+**cef_mapping** |  optional  | JSON dictionary represented as a serialized JSON string. Each key in the dictionary is a potential key name in an artifact that is to be renamed to the value | string | 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.rule\_id | numeric |  `cofensetriage rule id` 
-action\_result\.parameter\.ingest\_report | boolean | 
-action\_result\.parameter\.ingest\_subfields | boolean | 
-action\_result\.parameter\.label | string | 
-action\_result\.parameter\.tenant | string | 
-action\_result\.parameter\.cef\_mapping | string | 
-action\_result\.data\.\*\.id | string |  `cofensetriage rule id` 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.id | string |  `cofensetriage report id` 
-action\_result\.data\.\*\.reports\.\*\.meta\.risk\_score\_summary\.vip | numeric | 
-action\_result\.data\.\*\.reports\.\*\.meta\.risk\_score\_summary\.rules | numeric | 
-action\_result\.data\.\*\.reports\.\*\.meta\.risk\_score\_summary\.reporter | numeric | 
-action\_result\.data\.\*\.reports\.\*\.meta\.risk\_score\_summary\.integrations | numeric | 
-action\_result\.data\.\*\.reports\.\*\.type | string | 
-action\_result\.data\.\*\.reports\.\*\.links\.self | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.attributes\.md5 | string |  `md5` 
-action\_result\.data\.\*\.reports\.\*\.attributes\.sha256 | string |  `sha256` 
-action\_result\.data\.\*\.reports\.\*\.attributes\.subject | string |  `cofensetriage report subject` 
-action\_result\.data\.\*\.reports\.\*\.attributes\.location | string |  `cofensetriage report location` 
-action\_result\.data\.\*\.reports\.\*\.attributes\.html\_body | string | 
-action\_result\.data\.\*\.reports\.\*\.attributes\.text\_body | string | 
-action\_result\.data\.\*\.reports\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.reports\.\*\.attributes\.risk\_score | numeric |  `cofensetriage risk score` 
-action\_result\.data\.\*\.reports\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.reports\.\*\.attributes\.raw\_headers | string | 
-action\_result\.data\.\*\.reports\.\*\.attributes\.received\_at | string |  `date` 
-action\_result\.data\.\*\.reports\.\*\.attributes\.reported\_at | string |  `date` 
-action\_result\.data\.\*\.reports\.\*\.attributes\.from\_address | string |  `email` 
-action\_result\.data\.\*\.reports\.\*\.attributes\.processed\_at | string |  `date` 
-action\_result\.data\.\*\.reports\.\*\.attributes\.match\_priority | numeric |  `cofensetriage priority` 
-action\_result\.data\.\*\.reports\.\*\.container\_id | numeric |  `container id` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.urls\.links\.self | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.urls\.links\.related | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.rules\.links\.self | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.rules\.links\.related | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.cluster\.data\.id | string | 
-action\_result\.data\.\*\.reports\.\*\.relationships\.cluster\.data\.type | string | 
-action\_result\.data\.\*\.reports\.\*\.relationships\.cluster\.links\.self | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.cluster\.links\.related | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.domains\.links\.self | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.domains\.links\.related | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.headers\.links\.self | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.headers\.links\.related | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.assignee\.data | string | 
-action\_result\.data\.\*\.reports\.\*\.relationships\.assignee\.links\.self | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.assignee\.links\.related | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.category\.data | string | 
-action\_result\.data\.\*\.reports\.\*\.relationships\.category\.links\.self | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.category\.links\.related | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.comments\.links\.self | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.comments\.links\.related | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.reporter\.data\.id | string |  `cofensetriage reporter id` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.reporter\.data\.type | string | 
-action\_result\.data\.\*\.reports\.\*\.relationships\.reporter\.links\.self | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.reporter\.links\.related | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.hostnames\.links\.self | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.hostnames\.links\.related | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.attachments\.links\.self | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.attachments\.links\.related | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.threat\_indicators\.links\.self | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.threat\_indicators\.links\.related | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.attachment\_payloads\.links\.self | string |  `url` 
-action\_result\.data\.\*\.reports\.\*\.relationships\.attachment\_payloads\.links\.related | string |  `url` 
-action\_result\.data\.\*\.attributes\.name | string |  `cofensetriage rule name` 
-action\_result\.data\.\*\.attributes\.tags | string |  `cofensetriage tag` 
-action\_result\.data\.\*\.attributes\.scope | string |  `cofensetriage rule scope` 
-action\_result\.data\.\*\.attributes\.active | boolean | 
-action\_result\.data\.\*\.attributes\.content | string | 
-action\_result\.data\.\*\.attributes\.priority | numeric |  `cofensetriage priority` 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.author\_name | string |  `cofensetriage rule author name` 
-action\_result\.data\.\*\.attributes\.description | string |  `cofensetriage rule description` 
-action\_result\.data\.\*\.attributes\.imported\_at | string | 
-action\_result\.data\.\*\.attributes\.rule\_context | string |  `cofensetriage rule context` 
-action\_result\.data\.\*\.attributes\.time\_to\_live | string | 
-action\_result\.data\.\*\.attributes\.reports\_count | numeric |  `cofensetriage rule reports count` 
-action\_result\.data\.\*\.attributes\.share\_with\_cofense | boolean | 
-action\_result\.data\.\*\.relationships\.owner\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.owner\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.owner\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.owner\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.reports\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.reports\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.clusters\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.clusters\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.report\_context\.data | string | 
-action\_result\.data\.\*\.relationships\.report\_context\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.report\_context\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.cluster\_context\.data | string | 
-action\_result\.data\.\*\.relationships\.cluster\_context\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.cluster\_context\.links\.related | string |  `url` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary | string | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.rule_id | numeric |  `cofensetriage rule id`  |   15 
+action_result.parameter.ingest_report | boolean |  |   True  False 
+action_result.parameter.ingest_subfields | boolean |  |   True  False 
+action_result.parameter.label | string |  |   events 
+action_result.parameter.tenant | string |  |   default 
+action_result.parameter.cef_mapping | string |  |  
+action_result.data.\*.id | string |  `cofensetriage rule id`  |   2534 
+action_result.data.\*.type | string |  |   rules 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/2534 
+action_result.data.\*.reports.\*.id | string |  `cofensetriage report id`  |   688 
+action_result.data.\*.reports.\*.meta.risk_score_summary.vip | numeric |  |   5 
+action_result.data.\*.reports.\*.meta.risk_score_summary.rules | numeric |  |   1 
+action_result.data.\*.reports.\*.meta.risk_score_summary.reporter | numeric |  |   15 
+action_result.data.\*.reports.\*.meta.risk_score_summary.integrations | numeric |  |   2 
+action_result.data.\*.reports.\*.type | string |  |   reports 
+action_result.data.\*.reports.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688 
+action_result.data.\*.reports.\*.attributes.md5 | string |  `md5`  |   8e956591920c7c49047235e7605d6838 
+action_result.data.\*.reports.\*.attributes.sha256 | string |  `sha256`  |   53669341f34ad3dfc467d8c1ece15e1dcf8b26a856d9228df10aaa3aa0802116 
+action_result.data.\*.reports.\*.attributes.subject | string |  `cofensetriage report subject`  |   test 
+action_result.data.\*.reports.\*.attributes.location | string |  `cofensetriage report location`  |   Inbox 
+action_result.data.\*.reports.\*.attributes.html_body | string |  |  
+action_result.data.\*.reports.\*.attributes.text_body | string |  |  
+action_result.data.\*.reports.\*.attributes.created_at | string |  `date`  |   2020-12-29T14:14:32.875Z 
+action_result.data.\*.reports.\*.attributes.risk_score | numeric |  `cofensetriage risk score`  |   23 
+action_result.data.\*.reports.\*.attributes.updated_at | string |  `date`  |   2021-04-22T10:34:54.666Z 
+action_result.data.\*.reports.\*.attributes.raw_headers | string |  |  
+action_result.data.\*.reports.\*.attributes.received_at | string |  `date`  |   2020-12-29T14:10:18.000Z 
+action_result.data.\*.reports.\*.attributes.reported_at | string |  `date`  |   2020-12-29T14:10:16.000Z 
+action_result.data.\*.reports.\*.attributes.from_address | string |  `email`  |   test@example.com 
+action_result.data.\*.reports.\*.attributes.processed_at | string |  `date`  |   2021-04-22T10:34:54.666Z 
+action_result.data.\*.reports.\*.attributes.match_priority | numeric |  `cofensetriage priority`  |   1 
+action_result.data.\*.reports.\*.container_id | numeric |  `container id`  |   2844 
+action_result.data.\*.reports.\*.relationships.urls.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/relationships/urls 
+action_result.data.\*.reports.\*.relationships.urls.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/urls 
+action_result.data.\*.reports.\*.relationships.rules.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/relationships/rules 
+action_result.data.\*.reports.\*.relationships.rules.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/rules 
+action_result.data.\*.reports.\*.relationships.cluster.data.id | string |  |   217 
+action_result.data.\*.reports.\*.relationships.cluster.data.type | string |  |   clusters 
+action_result.data.\*.reports.\*.relationships.cluster.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/relationships/cluster 
+action_result.data.\*.reports.\*.relationships.cluster.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/cluster 
+action_result.data.\*.reports.\*.relationships.domains.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/relationships/domains 
+action_result.data.\*.reports.\*.relationships.domains.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/domains 
+action_result.data.\*.reports.\*.relationships.headers.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/relationships/headers 
+action_result.data.\*.reports.\*.relationships.headers.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/headers 
+action_result.data.\*.reports.\*.relationships.assignee.data | string |  |  
+action_result.data.\*.reports.\*.relationships.assignee.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/relationships/assignee 
+action_result.data.\*.reports.\*.relationships.assignee.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/assignee 
+action_result.data.\*.reports.\*.relationships.category.data | string |  |  
+action_result.data.\*.reports.\*.relationships.category.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/relationships/category 
+action_result.data.\*.reports.\*.relationships.category.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/category 
+action_result.data.\*.reports.\*.relationships.comments.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/relationships/comments 
+action_result.data.\*.reports.\*.relationships.comments.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/comments 
+action_result.data.\*.reports.\*.relationships.reporter.data.id | string |  `cofensetriage reporter id`  |   24 
+action_result.data.\*.reports.\*.relationships.reporter.data.type | string |  |   reporters 
+action_result.data.\*.reports.\*.relationships.reporter.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/relationships/reporter 
+action_result.data.\*.reports.\*.relationships.reporter.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/reporter 
+action_result.data.\*.reports.\*.relationships.hostnames.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/relationships/hostnames 
+action_result.data.\*.reports.\*.relationships.hostnames.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/hostnames 
+action_result.data.\*.reports.\*.relationships.attachments.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/relationships/attachments 
+action_result.data.\*.reports.\*.relationships.attachments.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/attachments 
+action_result.data.\*.reports.\*.relationships.threat_indicators.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/relationships/threat_indicators 
+action_result.data.\*.reports.\*.relationships.threat_indicators.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/threat_indicators 
+action_result.data.\*.reports.\*.relationships.attachment_payloads.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/relationships/attachment_payloads 
+action_result.data.\*.reports.\*.relationships.attachment_payloads.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/reports/688/attachment_payloads 
+action_result.data.\*.attributes.name | string |  `cofensetriage rule name`  |   test_rule1 
+action_result.data.\*.attributes.tags | string |  `cofensetriage tag`  |   TEST 
+action_result.data.\*.attributes.scope | string |  `cofensetriage rule scope`  |   Email 
+action_result.data.\*.attributes.active | boolean |  |   True  False 
+action_result.data.\*.attributes.content | string |  |  
+action_result.data.\*.attributes.priority | numeric |  `cofensetriage priority`  |   1 
+action_result.data.\*.attributes.created_at | string |  `date`  |   2021-04-19T10:31:44.773Z 
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2021-04-22T10:34:50.310Z 
+action_result.data.\*.attributes.author_name | string |  `cofensetriage rule author name`  |   author1 
+action_result.data.\*.attributes.description | string |  `cofensetriage rule description`  |   Its is a test rule 
+action_result.data.\*.attributes.imported_at | string |  |  
+action_result.data.\*.attributes.rule_context | string |  `cofensetriage rule context`  |   Unknown 
+action_result.data.\*.attributes.time_to_live | string |  |   Forever 
+action_result.data.\*.attributes.reports_count | numeric |  `cofensetriage rule reports count`  |   3 
+action_result.data.\*.attributes.share_with_cofense | boolean |  |   False  True 
+action_result.data.\*.relationships.owner.data.id | string |  |   9 
+action_result.data.\*.relationships.owner.data.type | string |  |   operators 
+action_result.data.\*.relationships.owner.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/2534/relationships/owner 
+action_result.data.\*.relationships.owner.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/2534/owner 
+action_result.data.\*.relationships.reports.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/2534/relationships/reports 
+action_result.data.\*.relationships.reports.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/2534/reports 
+action_result.data.\*.relationships.clusters.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/2534/relationships/clusters 
+action_result.data.\*.relationships.clusters.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/2534/clusters 
+action_result.data.\*.relationships.report_context.data | string |  |  
+action_result.data.\*.relationships.report_context.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/2534/relationships/report_context 
+action_result.data.\*.relationships.report_context.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/2534/report_context 
+action_result.data.\*.relationships.cluster_context.data | string |  |  
+action_result.data.\*.relationships.cluster_context.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/2534/relationships/cluster_context 
+action_result.data.\*.relationships.cluster_context.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/rules/2534/cluster_context 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Successfully retrieved the rule 
+action_result.summary | string |  |  
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'get integration submissions'
 Retrieve integration submissions from the Cofense Triage Platform filtered based on the provided parameters
@@ -2411,32 +2430,32 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **value** |  required  | The value of integration submission | string |  `hash`  `md5`  `sha256`  `url` 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.type | string | 
-action\_result\.parameter\.value | string |  `hash`  `md5`  `sha256`  `url` 
-action\_result\.data\.\*\.id | string | 
-action\_result\.data\.\*\.type | string | 
-action\_result\.data\.\*\.links\.self | string |  `url` 
-action\_result\.data\.\*\.attributes\.kind | string | 
-action\_result\.data\.\*\.attributes\.result | string | 
-action\_result\.data\.\*\.attributes\.status | string | 
-action\_result\.data\.\*\.attributes\.risk\_score | numeric |  `cofensetriage risk score` 
-action\_result\.data\.\*\.attributes\.created\_at | string |  `date` 
-action\_result\.data\.\*\.attributes\.updated\_at | string |  `date` 
-action\_result\.data\.\*\.relationships\.target\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.target\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.target\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.target\.links\.related | string |  `url` 
-action\_result\.data\.\*\.relationships\.integration\.data\.id | string | 
-action\_result\.data\.\*\.relationships\.integration\.data\.type | string | 
-action\_result\.data\.\*\.relationships\.integration\.links\.self | string |  `url` 
-action\_result\.data\.\*\.relationships\.integration\.links\.related | string |  `url` 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.summary\.total\_integration\_submissions\_retrieved | numeric | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.type | string |  |   URL 
+action_result.parameter.value | string |  `hash`  `md5`  `sha256`  `url`  |   https://test.com 
+action_result.data.\*.id | string |  |   158 
+action_result.data.\*.type | string |  |   integration_submissions 
+action_result.data.\*.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/integration_submissions/158 
+action_result.data.\*.attributes.kind | string |  |   Hash 
+action_result.data.\*.attributes.result | string |  |  
+action_result.data.\*.attributes.status | string |  |   complete 
+action_result.data.\*.attributes.risk_score | numeric |  `cofensetriage risk score`  |   0 
+action_result.data.\*.attributes.created_at | string |  `date`  |   2021-04-13T15:43:59.609Z 
+action_result.data.\*.attributes.updated_at | string |  `date`  |   2021-04-13T15:52:11.485Z 
+action_result.data.\*.relationships.target.data.id | string |  |   190 
+action_result.data.\*.relationships.target.data.type | string |  |   attachment_payloads 
+action_result.data.\*.relationships.target.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/integration_submissions/158/relationships/target 
+action_result.data.\*.relationships.target.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/integration_submissions/158/target 
+action_result.data.\*.relationships.integration.data.id | string |  |   6 
+action_result.data.\*.relationships.integration.data.type | string |  |   integrations 
+action_result.data.\*.relationships.integration.links.self | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/integration_submissions/158/relationships/integration 
+action_result.data.\*.relationships.integration.links.related | string |  `url`  |   https://cofensetriageurl.com/api/public/v2/integration_submissions/158/integration 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Total integration submissions retrieved: 1 
+action_result.summary.total_integration_submissions_retrieved | numeric |  |   1 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'on poll'
 Action handler for the on poll ingest functionality
@@ -2444,15 +2463,15 @@ Action handler for the on poll ingest functionality
 Type: **ingest**  
 Read only: **True**
 
-This action ingests reports or threat indicators from Cofense Triage as per the selected ingestion type\.
+This action ingests reports or threat indicators from Cofense Triage as per the selected ingestion type.
 
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**container\_count** |  optional  | Maximum number of containers to ingest | numeric | 
-**start\_time** |  optional  | Parameter ignored in this app | numeric | 
-**end\_time** |  optional  | Parameter ignored in this app | numeric | 
-**artifact\_count** |  optional  | Parameter ignored in this app | numeric | 
+**container_count** |  optional  | Maximum number of containers to ingest | numeric | 
+**start_time** |  optional  | Parameter ignored in this app | numeric | 
+**end_time** |  optional  | Parameter ignored in this app | numeric | 
+**artifact_count** |  optional  | Parameter ignored in this app | numeric | 
 
 #### Action Output
 No Output
