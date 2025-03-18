@@ -1,6 +1,6 @@
 # File: cofensetriagev2_consts.py
 #
-# Copyright (c) 2021-2023 Cofense
+# Copyright (c) 2021-2025 Cofense
 #
 # This unpublished material is proprietary to Cofense.
 # All rights reserved. The methods and
@@ -18,7 +18,7 @@ ERR_MSG_UNAVAILABLE = "Error message unavailable. Please check the asset configu
 COFENSE_STATE_FILE_CORRUPT_ERR = "Error occurred while loading the state file due to its unexpected format.\
       Resetting the state file with the default format. Please try again"
 
-PHANTOM_VAULT_DIR = '/opt/phantom/vault/tmp/'
+PHANTOM_VAULT_DIR = "/opt/phantom/vault/tmp/"
 
 COFENSE_TRIAGE_STATUS_ENDPOINT = "/api/public/v2/system/status"
 COFENSE_TRIAGE_TOKEN_ENDPOINT = "/oauth/token"
@@ -34,10 +34,10 @@ COFENSE_GET_CATEGORY_ID_BY_CATEGORY_NAME = "/api/public/v2/categories?filter[nam
 COFENSE_REPORTER_ENDPOINT = "/api/public/v2/reporters/{reporter_id}"
 COFENSE_URLS_ENDPOINT = "/api/public/v2/urls"
 COFENSE_URL_ENDPOINT = "/api/public/v2/urls/{url_id}"
-COFENSE_THREAT_INDICATORS_ENDPOINT = '/api/public/v2/threat_indicators'
+COFENSE_THREAT_INDICATORS_ENDPOINT = "/api/public/v2/threat_indicators"
 COFENSE_RESPONSE_ENDPOINT = "/api/public/v2/responses"
 COFENSE_CATEGORIES_ENDPOINT = "/api/public/v2/categories"
-COFENSE_EMAIL_ENDPOINT = '/api/public/v2/reports/{report_id}/download'
+COFENSE_EMAIL_ENDPOINT = "/api/public/v2/reports/{report_id}/download"
 COFENSE_COMMENT_ENDPOINT = "/api/public/v2/comments/{comment_id}"
 COFENSE_COMMENTS_ENDPOINT = "/api/public/v2/comments"
 COFENSE_ATTACHMENT_PAYLOADS_ENDPOINT = "/api/public/v2/attachment_payloads"
@@ -73,7 +73,7 @@ COFENSE_DEFAULT_THREAT_SOURCE = "Splunk_Phantom-UI"
 COFENSE_REPORT_LOCATIONS = ["inbox", "reconnaissance", "processed", "all"]
 COFENSE_SORT_VALUES = ["oldest_first", "latest_first"]
 COFENSE_LEVEL_VALUES = ["malicious", "suspicious", "benign", "all"]
-COFENSE_TYPE_VALUES = ['hostname', 'url', 'md5', 'sha256', 'header', 'all']
+COFENSE_TYPE_VALUES = ["hostname", "url", "md5", "sha256", "header", "all"]
 COFENSE_OPERATORS = ["eq", "not_eq", "lt", "lteq", "gt", "gteq"]
 COFENSE_INGESTION_TYPES = ["reports", "threat_indicators"]
 COFENSE_INGESTION_COMMON_KEYS = ["ingest_subfields", "cef_mapping", "sort", "max_results"]
