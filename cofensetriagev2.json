@@ -7670,45 +7670,5 @@
             "output": [],
             "versions": "EQ(*)"
         }
-    ],
-    "pip_dependencies": {
-        "wheel": [
-            {
-                "module": "beautifulsoup4",
-                "input_file": "wheels/py3/beautifulsoup4-4.9.1-py3-none-any.whl"
-            },
-            {
-                "module": "python_dateutil",
-                "input_file": "wheels/shared/python_dateutil-2.8.1-py2.py3-none-any.whl"
-            },
-            {
-                "module": "six",
-                "input_file": "wheels/shared/six-1.16.0-py2.py3-none-any.whl"
-            },
-            {
-                "module": "soupsieve",
-                "input_file": "wheels/py3/soupsieve-2.3.2.post1-py3-none-any.whl"
-            }
-        ]
-    },
-    "pip39_dependencies": {
-        "wheel": [
-            {
-                "module": "beautifulsoup4",
-                "input_file": "wheels/py3/beautifulsoup4-4.9.1-py3-none-any.whl"
-            },
-            {
-                "module": "python_dateutil",
-                "input_file": "wheels/shared/python_dateutil-2.8.1-py2.py3-none-any.whl"
-            },
-            {
-                "module": "six",
-                "input_file": "wheels/shared/six-1.16.0-py2.py3-none-any.whl"
-            },
-            {
-                "module": "soupsieve",
-                "input_file": "wheels/py3/soupsieve-2.5-py3-none-any.whl"
-            }
-        ]
-    }
+    ]
 }
