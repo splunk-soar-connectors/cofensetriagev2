@@ -1,10 +1,10 @@
 # Cofense Triage v2 API
 
-Publisher: Cofense \
-Connector Version: 1.1.1 \
-Product Vendor: Cofense \
-Product Name: Triage v2 \
-Minimum Product Version: 6.0.0
+Publisher: Cofense <br>
+Connector Version: 1.1.1 <br>
+Product Vendor: Cofense <br>
+Product Name: Triage v2 <br>
+Minimum Product Version: 6.3.0
 
 This app supports actions for Cofense Triage's version 2 API for faster bidirectional phishing analysis and response
 
@@ -1091,32 +1091,32 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration \
-[get reports](#action-get-reports) - Retrieve reports from the Cofense Triage Platform filtered based on the provided parameters \
-[get report](#action-get-report) - Retrieve a report with the provided ID from the Cofense Triage Platform \
-[get email](#action-get-email) - Downloads the raw email for the report that matches the specified report ID \
-[get categories](#action-get-categories) - Retrieve categories from the Cofense Triage Platform filtered based on the provided parameters \
-[get responses](#action-get-responses) - Retrieve responses from the Cofense Triage Platform. This action is supported for Cofense Triage with version older than 1.23 \
-[create response](#action-create-response) - Create a response. This action is supported for Cofense Triage with version older than 1.23 \
-[categorize report](#action-categorize-report) - Categorize a report into the provided category \
-[get threat indicators](#action-get-threat-indicators) - Retrieve threat indicators from the Cofense Triage Platform filtered based on the provided parameters \
-[create threat indicator](#action-create-threat-indicator) - Create a threat indicator with the provided parameters \
-[get reporters](#action-get-reporters) - Retrieve reporters from the Cofense Triage Platform filtered based on the provided parameters \
-[get reporter](#action-get-reporter) - Retrieve a reporter from the Cofense Triage Platform for the provided reporter ID \
-[get urls](#action-get-urls) - Retrieve URLs from the Cofense Triage Platform filtered based on the provided parameters \
-[get url](#action-get-url) - Retrieve a URL from the Cofense Triage Platform for the provided URL ID \
-[get comments](#action-get-comments) - Retrieve comments from the Cofense Triage Platform filtered based on the provided parameters \
-[get comment](#action-get-comment) - Retrieve a comment from the Cofense Triage Platform for the provided comment ID \
-[get rules](#action-get-rules) - Retrieve rules from the Cofense Triage Platform filtered based on the provided parameters \
-[get rule](#action-get-rule) - Retrieve a rule from the Cofense Triage Platform for the provided rule ID \
-[get integration submissions](#action-get-integration-submissions) - Retrieve integration submissions from the Cofense Triage Platform filtered based on the provided parameters \
+[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration <br>
+[get reports](#action-get-reports) - Retrieve reports from the Cofense Triage Platform filtered based on the provided parameters <br>
+[get report](#action-get-report) - Retrieve a report with the provided ID from the Cofense Triage Platform <br>
+[get email](#action-get-email) - Downloads the raw email for the report that matches the specified report ID <br>
+[get categories](#action-get-categories) - Retrieve categories from the Cofense Triage Platform filtered based on the provided parameters <br>
+[get responses](#action-get-responses) - Retrieve responses from the Cofense Triage Platform. This action is supported for Cofense Triage with version older than 1.23 <br>
+[create response](#action-create-response) - Create a response. This action is supported for Cofense Triage with version older than 1.23 <br>
+[categorize report](#action-categorize-report) - Categorize a report into the provided category <br>
+[get threat indicators](#action-get-threat-indicators) - Retrieve threat indicators from the Cofense Triage Platform filtered based on the provided parameters <br>
+[create threat indicator](#action-create-threat-indicator) - Create a threat indicator with the provided parameters <br>
+[get reporters](#action-get-reporters) - Retrieve reporters from the Cofense Triage Platform filtered based on the provided parameters <br>
+[get reporter](#action-get-reporter) - Retrieve a reporter from the Cofense Triage Platform for the provided reporter ID <br>
+[get urls](#action-get-urls) - Retrieve URLs from the Cofense Triage Platform filtered based on the provided parameters <br>
+[get url](#action-get-url) - Retrieve a URL from the Cofense Triage Platform for the provided URL ID <br>
+[get comments](#action-get-comments) - Retrieve comments from the Cofense Triage Platform filtered based on the provided parameters <br>
+[get comment](#action-get-comment) - Retrieve a comment from the Cofense Triage Platform for the provided comment ID <br>
+[get rules](#action-get-rules) - Retrieve rules from the Cofense Triage Platform filtered based on the provided parameters <br>
+[get rule](#action-get-rule) - Retrieve a rule from the Cofense Triage Platform for the provided rule ID <br>
+[get integration submissions](#action-get-integration-submissions) - Retrieve integration submissions from the Cofense Triage Platform filtered based on the provided parameters <br>
 [on poll](#action-on-poll) - Action handler for the on poll ingest functionality
 
 ## action: 'test connectivity'
 
 Validate the asset configuration for connectivity using supplied configuration
 
-Type: **test** \
+Type: **test** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -1131,7 +1131,7 @@ No Output
 
 Retrieve reports from the Cofense Triage Platform filtered based on the provided parameters
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 If the 'ingest_subfields' parameter is true, the report and the subfields together will get ingested into the container. If no value is provided in any parameter, then all the records will be retrieved. If reporter_id and category_id both are provided then reports will be fetched based on category_id.
@@ -1264,7 +1264,7 @@ action_result.data.\*.relationships.category.data | string | | |
 
 Retrieve a report with the provided ID from the Cofense Triage Platform
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 If the 'ingest_subfields' parameter is true, the report and the subfields together will get ingested into the container.
@@ -1355,7 +1355,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Downloads the raw email for the report that matches the specified report ID
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -1395,7 +1395,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Retrieve categories from the Cofense Triage Platform filtered based on the provided parameters
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 If no value is provided in any parameter, then all the records will be retrieved.
@@ -1439,7 +1439,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Retrieve responses from the Cofense Triage Platform. This action is supported for Cofense Triage with version older than 1.23
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -1480,7 +1480,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Create a response. This action is supported for Cofense Triage with version older than 1.23
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -1539,7 +1539,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Categorize a report into the provided category
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -1572,7 +1572,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Retrieve threat indicators from the Cofense Triage Platform filtered based on the provided parameters
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 If the 'ingest_subfields' parameter is true, the threat indicator and the subfields together will get ingested into the container. If no value is provided in any parameter, then all the records will be retrieved.
@@ -1640,7 +1640,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Create a threat indicator with the provided parameters
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -1687,7 +1687,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Retrieve reporters from the Cofense Triage Platform filtered based on the provided parameters
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 If no value is provided in any parameter, then all the records will be retrieved.
@@ -1735,7 +1735,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Retrieve a reporter from the Cofense Triage Platform for the provided reporter ID
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -1773,7 +1773,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Retrieve URLs from the Cofense Triage Platform filtered based on the provided parameters
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 If no value is provided in any parameter, then all the records will be retrieved.
@@ -1826,7 +1826,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Retrieve a URL from the Cofense Triage Platform for the provided URL ID
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -1865,7 +1865,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Retrieve comments from the Cofense Triage Platform filtered based on the provided parameters
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 If no value is provided in any parameter, then all the records will be retrieved.
@@ -1957,7 +1957,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Retrieve a comment from the Cofense Triage Platform for the provided comment ID
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -2037,7 +2037,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Retrieve rules from the Cofense Triage Platform filtered based on the provided parameters
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 If no value is provided in any parameter, then all the records will be retrieved.
@@ -2121,7 +2121,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Retrieve a rule from the Cofense Triage Platform for the provided rule ID
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 If the 'ingest_subfields' parameter is true, the report and the subfields together will get ingested into the container.
@@ -2244,7 +2244,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Retrieve integration submissions from the Cofense Triage Platform filtered based on the provided parameters
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -2287,7 +2287,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Action handler for the on poll ingest functionality
 
-Type: **ingest** \
+Type: **ingest** <br>
 Read only: **True**
 
 This action ingests reports or threat indicators from Cofense Triage as per the selected ingestion type.
@@ -2309,7 +2309,7 @@ ______________________________________________________________________
 
 Auto-generated Splunk SOAR Connector documentation.
 
-Copyright 2025 Splunk Inc.
+Copyright 2026 Splunk Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -7,15 +7,15 @@
     "logo": "logo_cofensetriagev2.svg",
     "logo_dark": "logo_cofensetriagev2_dark.svg",
     "product_name": "Triage v2",
-    "python_version": "3",
+    "python_version": "3, 3.13",
     "product_version_regex": ".*",
     "publisher": "Cofense",
-    "license": "Copyright (c) 2021-2025 Cofense",
+    "license": "Copyright (c) 2021-2026 Cofense",
     "app_version": "1.1.1",
     "utctime_updated": "2025-04-28T19:02:59.774502Z",
     "package_name": "phantom_cofensetriagev2",
     "main_module": "cofensetriagev2_connector.py",
-    "min_phantom_version": "6.0.0",
+    "min_phantom_version": "6.3.0",
     "app_wizard_version": "1.0.0",
     "fips_cpmpliant": false,
     "configuration": {
@@ -7670,5 +7670,11 @@
             "output": [],
             "versions": "EQ(*)"
         }
-    ]
+    ],
+    "pip39_dependencies": {
+        "wheel": []
+    },
+    "pip313_dependencies": {
+        "wheel": []
+    }
 }

@@ -1,6 +1,6 @@
 # File: default_timezones.py
 #
-# Copyright (c) 2021-2025 Cofense
+# Copyright (c) 2021-2026 Cofense
 #
 # This unpublished material is proprietary to Cofense.
 # All rights reserved. The methods and
@@ -16,7 +16,7 @@ https://github.com/prefrontal/dateutil-parser-timezones
 
 MIT License
 
-Copyright (c) 2016-2025 Craig Bennett
+Copyright (c) 2016-2026 Craig Bennett
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
