@@ -1,1 +1,2 @@
 **Unreleased**
+* Added support for python 3.13

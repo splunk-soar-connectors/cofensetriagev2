@@ -1,6 +1,6 @@
 # File: cofensetriagev2_view.py
 #
-# Copyright (c) 2021-2025 Cofense
+# Copyright (c) 2021-2026 Cofense
 #
 # This unpublished material is proprietary to Cofense.
 # All rights reserved. The methods and
