@@ -1,7 +1,7 @@
 # Cofense Triage v2 API
 
 Publisher: Cofense <br>
-Connector Version: 1.1.1 <br>
+Connector Version: 1.2.0 <br>
 Product Vendor: Cofense <br>
 Product Name: Triage v2 <br>
 Minimum Product Version: 6.3.0
