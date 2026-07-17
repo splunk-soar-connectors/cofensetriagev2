@@ -15,6 +15,7 @@ import json
 import tempfile
 
 import dateutil.parser
+import encryption_helper
 
 # Phantom App imports
 import phantom.app as phantom
@@ -277,8 +278,7 @@ class CofenseTriageConnector(BaseConnector):
         if headers is None:
             headers = {}
 
-        token = self._state.get(COFENSE_OAUTH_TOKEN_STRING, {})
-        if not token.get(COFENSE_OAUTH_ACCESS_TOKEN_STRING):
+        if not self._access_token:
             ret_val = self._generate_new_access_token(action_result)
 
             if phantom.is_fail(ret_val):
@@ -1039,8 +1039,17 @@ class CofenseTriageConnector(BaseConnector):
             self._state.pop(COFENSE_OAUTH_TOKEN_STRING, {})
             return action_result.get_status()
 
-        self._state[COFENSE_OAUTH_TOKEN_STRING] = resp_json
         self._access_token = resp_json[COFENSE_OAUTH_ACCESS_TOKEN_STRING]
+        try:
+            encrypted_token = encryption_helper.encrypt(self._access_token, self.get_asset_id())
+        except Exception as exc:
+            self._access_token = None
+            self._state.pop(COFENSE_OAUTH_TOKEN_STRING, None)
+            self.debug_print(COFENSE_STATE_ENCRYPTION_ERR, exc)
+            return action_result.set_status(phantom.APP_ERROR, COFENSE_STATE_ENCRYPTION_ERR)
+
+        self._state[COFENSE_OAUTH_TOKEN_STRING] = {COFENSE_OAUTH_ACCESS_TOKEN_STRING: encrypted_token}
+        self._state[COFENSE_STATE_IS_ENCRYPTED] = True
         self.save_state(self._state)
 
         return phantom.APP_SUCCESS
@@ -2410,8 +2419,27 @@ class CofenseTriageConnector(BaseConnector):
         self._base_url = config.get("base_url").rstrip("/")
         self._client_id = config.get("client_id")
         self._client_secret = config.get("client_secret")
-        self._access_token = self._state.get(COFENSE_OAUTH_TOKEN_STRING, {}).get(COFENSE_OAUTH_ACCESS_TOKEN_STRING)
-        self._verify = config.get("verify_server_cert", False)
+        stored_token = self._state.get(COFENSE_OAUTH_TOKEN_STRING, {}).get(COFENSE_OAUTH_ACCESS_TOKEN_STRING)
+        if stored_token:
+            if self._state.get(COFENSE_STATE_IS_ENCRYPTED):
+                try:
+                    self._access_token = encryption_helper.decrypt(stored_token, self.get_asset_id())
+                except Exception as exc:
+                    self.debug_print("Unable to decrypt the cached OAuth access token; requesting a new token", exc)
+                    self._state.pop(COFENSE_OAUTH_TOKEN_STRING, None)
+                    self._state.pop(COFENSE_STATE_IS_ENCRYPTED, None)
+            else:
+                # Migrate legacy cleartext state immediately so subsequent state writes remain protected.
+                self._access_token = stored_token
+                try:
+                    encrypted_token = encryption_helper.encrypt(self._access_token, self.get_asset_id())
+                except Exception as exc:
+                    self.debug_print(COFENSE_STATE_ENCRYPTION_ERR, exc)
+                    return self.set_status(phantom.APP_ERROR, COFENSE_STATE_ENCRYPTION_ERR)
+                self._state[COFENSE_OAUTH_TOKEN_STRING] = {COFENSE_OAUTH_ACCESS_TOKEN_STRING: encrypted_token}
+                self._state[COFENSE_STATE_IS_ENCRYPTED] = True
+                self.save_state(self._state)
+        self._verify = config.get("verify_server_cert", True)
 
         self.set_validator("email", self._validate_email)
 
