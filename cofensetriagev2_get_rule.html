@@ -122,7 +122,7 @@
                   <td>
                     <a class="no-word-wrap"
                        href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['cofensetriage rule id'], 'value':'{{ rule.id }}' }], 0, {{ container.id }}, null, false);">
+                       onclick="context_menu(this, [{'contains': ['cofensetriage rule id'], 'value':'{{ rule.id|escapejs }}' }], 0, {{ container.id }}, null, false);">
                       {{ rule.id }}
                       &nbsp;
                       <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -132,7 +132,7 @@
                   <td>
                     <a class="no-word-wrap"
                        href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['cofensetriage rule name'], 'value':'{{ rule.attributes.name }}' }], 0, {{ container.id }}, null, false);">
+                       onclick="context_menu(this, [{'contains': ['cofensetriage rule name'], 'value':'{{ rule.attributes.name|escapejs }}' }], 0, {{ container.id }}, null, false);">
                       {{ rule.attributes.name }}
                       &nbsp;
                       <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -142,7 +142,7 @@
                   <td>
                     <a class="no-word-wrap"
                        href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['cofensetriage priority'], 'value':'{{ rule.attributes.priority }}' }], 0, {{ container.id }}, null, false);">
+                       onclick="context_menu(this, [{'contains': ['cofensetriage priority'], 'value':'{{ rule.attributes.priority|escapejs }}' }], 0, {{ container.id }}, null, false);">
                       {{ rule.attributes.priority }}
                       &nbsp;
                       <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -152,7 +152,7 @@
                   <td>
                     <a class="no-word-wrap"
                        href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['cofensetriage rule reports count'], 'value':'{{ rule.attributes.reports_count }}' }], 0, {{ container.id }}, null, false);">
+                       onclick="context_menu(this, [{'contains': ['cofensetriage rule reports count'], 'value':'{{ rule.attributes.reports_count|escapejs }}' }], 0, {{ container.id }}, null, false);">
                       {{ rule.attributes.reports_count }}
                       &nbsp;
                       <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -175,7 +175,7 @@
                               <td>
                                 <a class="no-word-wrap"
                                    href="javascript:;"
-                                   onclick="context_menu(this, [{'contains': ['cofensetriage report id'], 'value':'{{ report.id }}' }], 0, {{ container.id }}, null, false);">
+                                   onclick="context_menu(this, [{'contains': ['cofensetriage report id'], 'value':'{{ report.id|escapejs }}' }], 0, {{ container.id }}, null, false);">
                                   {{ report.id }}
                                   &nbsp;
                                   <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -186,7 +186,7 @@
                                 {% if report.container_id %}
                                   <a class="no-word-wrap"
                                      href="javascript:;"
-                                     onclick="context_menu(this, [{'contains': ['container id'], 'value':'{{ report.container_id }}' }], 0, {{ container.id }}, null, false);">
+                                     onclick="context_menu(this, [{'contains': ['container id'], 'value':'{{ report.container_id|escapejs }}' }], 0, {{ container.id }}, null, false);">
                                     {{ report.container_id }}
                                     &nbsp;
                                     <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -199,7 +199,7 @@
                               <td>
                                 <a class="no-word-wrap"
                                    href="javascript:;"
-                                   onclick="context_menu(this, [{'contains': ['cofensetriage report location'], 'value':'{{ report.attributes.location }}' }], 0, {{ container.id }}, null, false);">
+                                   onclick="context_menu(this, [{'contains': ['cofensetriage report location'], 'value':'{{ report.attributes.location|escapejs }}' }], 0, {{ container.id }}, null, false);">
                                   {{ report.attributes.location }}
                                   &nbsp;
                                   <span class="fa fa-caret-down" style="font-size: smaller;"></span>
