@@ -13,6 +13,8 @@
 
 COFENSE_OAUTH_TOKEN_STRING = "token"
 COFENSE_OAUTH_ACCESS_TOKEN_STRING = "access_token"
+COFENSE_STATE_IS_ENCRYPTED = "is_encrypted"
+COFENSE_STATE_ENCRYPTION_ERR = "Unable to encrypt the OAuth access token for secure storage"
 COFENSE_REPORTS_NOTFOUND_CODE = 404
 ERR_MSG_UNAVAILABLE = "Error message unavailable. Please check the asset configuration and|or action parameters"
 COFENSE_STATE_FILE_CORRUPT_ERR = "Error occurred while loading the state file due to its unexpected format.\

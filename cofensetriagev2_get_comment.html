@@ -123,7 +123,7 @@
                   <td>
                     <a class="no-word-wrap"
                        href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['cofensetriage comment id'], 'value':'{{ comment.id }}' }], 0, {{ container.id }}, null, false);">
+                       onclick="context_menu(this, [{'contains': ['cofensetriage comment id'], 'value':'{{ comment.id|escapejs }}' }], 0, {{ container.id }}, null, false);">
                       {{ comment.id }}
                       &nbsp;
                       <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -133,7 +133,7 @@
                   <td>
                     <a class="no-word-wrap"
                        href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['cofensetriage comment body format'], 'value':'{{ comment.attributes.body_format }}' }], 0, {{ container.id }}, null, false);">
+                       onclick="context_menu(this, [{'contains': ['cofensetriage comment body format'], 'value':'{{ comment.attributes.body_format|escapejs }}' }], 0, {{ container.id }}, null, false);">
                       {{ comment.attributes.body_format }}
                       &nbsp;
                       <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -146,7 +146,7 @@
                         <li class="no-word-wrap">
                           <a class="no-word-wrap"
                              href="javascript:;"
-                             onclick="context_menu(this, [{'contains': ['cofensetriage tag'], 'value':'{{ tag }}' }], 0, {{ container.id }}, null, false);">
+                             onclick="context_menu(this, [{'contains': ['cofensetriage tag'], 'value':'{{ tag|escapejs }}' }], 0, {{ container.id }}, null, false);">
                             {{ tag }}
                             &nbsp;
                             <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -161,7 +161,7 @@
                   <td>
                     <a class="no-word-wrap"
                        href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['date'], 'value':'{{ comment.attributes.created_at }}' }], 0, {{ container.id }}, null, false);">
+                       onclick="context_menu(this, [{'contains': ['date'], 'value':'{{ comment.attributes.created_at|escapejs }}' }], 0, {{ container.id }}, null, false);">
                       {{ comment.attributes.created_at }}
                       &nbsp;
                       <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -171,7 +171,7 @@
                   <td>
                     <a class="no-word-wrap"
                        href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['date'], 'value':'{{ comment.attributes.updated_at }}' }], 0, {{ container.id }}, null, false);">
+                       onclick="context_menu(this, [{'contains': ['date'], 'value':'{{ comment.attributes.updated_at|escapejs }}' }], 0, {{ container.id }}, null, false);">
                       {{ comment.attributes.updated_at }}
                       &nbsp;
                       <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -182,7 +182,7 @@
                     {% if comment.relationships.commentable.data %}
                       <a class="no-word-wrap"
                          href="javascript:;"
-                         onclick="context_menu(this, [{'contains': ['cofensetriage {{ comment.relationships.commentable.data.type }} id'], 'value':'{{ comment.relationships.commentable.data.id }}' }], 0, {{ container.id }}, null, false);">
+                         onclick="context_menu(this, [{'contains': ['cofensetriage {{ comment.relationships.commentable.data.type|escapejs }} id'], 'value':'{{ comment.relationships.commentable.data.id|escapejs }}' }], 0, {{ container.id }}, null, false);">
                         {{ comment.relationships.commentable.data.type }} - {{ comment.relationships.commentable.data.id }}
                         &nbsp;
                         <span class="fa fa-caret-down" style="font-size: smaller;"></span>

@@ -132,7 +132,7 @@
                   <td>
                     <a class="no-word-wrap"
                        href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['cofensetriage report id'], 'value':'{{ report.id }}' }], 0, {{ container.id }}, null, false);">
+                       onclick="context_menu(this, [{'contains': ['cofensetriage report id'], 'value':'{{ report.id|escapejs }}' }], 0, {{ container.id }}, null, false);">
                       {{ report.id }}
                       &nbsp;
                       <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -143,7 +143,7 @@
                     {% if report.container_id %}
                       <a class="no-word-wrap"
                          href="javascript:;"
-                         onclick="context_menu(this, [{'contains': ['container id'], 'value':'{{ report.container_id }}' }], 0, {{ container.id }}, null, false);">
+                         onclick="context_menu(this, [{'contains': ['container id'], 'value':'{{ report.container_id|escapejs }}' }], 0, {{ container.id }}, null, false);">
                         {{ report.container_id }}
                         &nbsp;
                         <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -157,7 +157,7 @@
                     {% if report.relationships.reporter.data %}
                       <a class="no-word-wrap"
                          href="javascript:;"
-                         onclick="context_menu(this, [{'contains': ['cofensetriage reporter id'], 'value':'{{ report.relationships.reporter.data.id }}' }], 0, {{ container.id }}, null, false);">
+                         onclick="context_menu(this, [{'contains': ['cofensetriage reporter id'], 'value':'{{ report.relationships.reporter.data.id|escapejs }}' }], 0, {{ container.id }}, null, false);">
                         {{ report.relationships.reporter.data.id }}
                         &nbsp;
                         <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -170,7 +170,7 @@
                   <td>
                     <a class="no-word-wrap"
                        href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['cofensetriage report location'], 'value':'{{ report.attributes.location }}' }], 0, {{ container.id }}, null, false);">
+                       onclick="context_menu(this, [{'contains': ['cofensetriage report location'], 'value':'{{ report.attributes.location|escapejs }}' }], 0, {{ container.id }}, null, false);">
                       {{ report.attributes.location }}
                       &nbsp;
                       <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -180,7 +180,7 @@
                   <td>
                     <a class="no-word-wrap"
                        href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['cofensetriage report subject'], 'value':'{{ report.attributes.subject }}' }], 0, {{ container.id }}, null, false);">
+                       onclick="context_menu(this, [{'contains': ['cofensetriage report subject'], 'value':'{{ report.attributes.subject|escapejs }}' }], 0, {{ container.id }}, null, false);">
                       {{ report.attributes.subject }}
                       &nbsp;
                       <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -192,7 +192,7 @@
                     {% if report.attributes.match_priority %}
                       <a class="no-word-wrap"
                          href="javascript:;"
-                         onclick="context_menu(this, [{'contains': ['cofensetriage priority'], 'value':'{{ report.attributes.match_priority }}' }], 0, {{ container.id }}, null, false);">
+                         onclick="context_menu(this, [{'contains': ['cofensetriage priority'], 'value':'{{ report.attributes.match_priority|escapejs }}' }], 0, {{ container.id }}, null, false);">
                         {{ report.attributes.match_priority }}
                         &nbsp;
                         <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -206,7 +206,7 @@
                     {% if report.relationships.category.data %}
                       <a class="no-word-wrap"
                          href="javascript:;"
-                         onclick="context_menu(this, [{'contains': ['cofensetriage category id'], 'value':'{{ report.relationships.category.data.id }}' }], 0, {{ container.id }}, null, false);">
+                         onclick="context_menu(this, [{'contains': ['cofensetriage category id'], 'value':'{{ report.relationships.category.data.id|escapejs }}' }], 0, {{ container.id }}, null, false);">
                         {{ report.relationships.category.data.id }}
                         &nbsp;
                         <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -219,7 +219,7 @@
                   <td>
                     <a class="no-word-wrap"
                        href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['date'], 'value':'{{ report.attributes.updated_at }}' }], 0, {{ container.id }}, null, false);">
+                       onclick="context_menu(this, [{'contains': ['date'], 'value':'{{ report.attributes.updated_at|escapejs }}' }], 0, {{ container.id }}, null, false);">
                       {{ report.attributes.updated_at }}
                       &nbsp;
                       <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -229,7 +229,7 @@
                   <td>
                     <a class="no-word-wrap"
                        href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['date'], 'value':'{{ report.attributes.reported_at }}' }], 0, {{ container.id }}, null, false);">
+                       onclick="context_menu(this, [{'contains': ['date'], 'value':'{{ report.attributes.reported_at|escapejs }}' }], 0, {{ container.id }}, null, false);">
                       {{ report.attributes.reported_at }}
                       &nbsp;
                       <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -242,7 +242,7 @@
                         <li class="no-word-wrap">
                           <a class="no-word-wrap"
                              href="javascript:;"
-                             onclick="context_menu(this, [{'contains': ['cofensetriage tag'], 'value':'{{ tag }}' }], 0, {{ container.id }}, null, false);">
+                             onclick="context_menu(this, [{'contains': ['cofensetriage tag'], 'value':'{{ tag|escapejs }}' }], 0, {{ container.id }}, null, false);">
                             {{ tag }}
                             &nbsp;
                             <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -260,7 +260,7 @@
                         <li class="no-word-wrap">
                           <a class="no-word-wrap"
                              href="javascript:;"
-                             onclick="context_menu(this, [{'contains': ['cofensetriage tag'], 'value':'{{ ctag }}' }], 0, {{ container.id }}, null, false);">
+                             onclick="context_menu(this, [{'contains': ['cofensetriage tag'], 'value':'{{ ctag|escapejs }}' }], 0, {{ container.id }}, null, false);">
                             {{ ctag }}
                             &nbsp;
                             <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -275,7 +275,7 @@
                   <td>
                     <a class="no-word-wrap"
                        href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['md5'], 'value':'{{ report.attributes.md5 }}' }], 0, {{ container.id }}, null, false);">
+                       onclick="context_menu(this, [{'contains': ['md5'], 'value':'{{ report.attributes.md5|escapejs }}' }], 0, {{ container.id }}, null, false);">
                       {{ report.attributes.md5 }}
                       &nbsp;
                       <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -285,7 +285,7 @@
                   <td>
                     <a class="no-word-wrap"
                        href="javascript:;"
-                       onclick="context_menu(this, [{'contains': ['sha256'], 'value':'{{ report.attributes.sha256 }}' }], 0, {{ container.id }}, null, false);">
+                       onclick="context_menu(this, [{'contains': ['sha256'], 'value':'{{ report.attributes.sha256|escapejs }}' }], 0, {{ container.id }}, null, false);">
                       {{ report.attributes.sha256 }}
                       &nbsp;
                       <span class="fa fa-caret-down" style="font-size: smaller;"></span>
@@ -296,7 +296,7 @@
                     {% if report.attributes.from_address %}
                       <a class="no-word-wrap"
                          href="javascript:;"
-                         onclick="context_menu(this, [{'contains': ['email'], 'value':'{{ report.attributes.from_address }}' }], 0, {{ container.id }}, null, false);">
+                         onclick="context_menu(this, [{'contains': ['email'], 'value':'{{ report.attributes.from_address|escapejs }}' }], 0, {{ container.id }}, null, false);">
                         {{ report.attributes.from_address }}
                         &nbsp;
                         <span class="fa fa-caret-down" style="font-size: smaller;"></span>
