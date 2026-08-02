@@ -1039,20 +1039,37 @@ class CofenseTriageConnector(BaseConnector):
             self._state.pop(COFENSE_OAUTH_TOKEN_STRING, {})
             return action_result.get_status()
 
-        self._access_token = resp_json[COFENSE_OAUTH_ACCESS_TOKEN_STRING]
+        access_token = resp_json[COFENSE_OAUTH_ACCESS_TOKEN_STRING]
         try:
-            encrypted_token = encryption_helper.encrypt(self._access_token, self.get_asset_id())
+            encrypted_token = encryption_helper.encrypt(access_token, self.get_asset_id())
         except Exception as exc:
-            self._access_token = None
-            self._state.pop(COFENSE_OAUTH_TOKEN_STRING, None)
+            self._clear_cached_oauth_token()
             self.debug_print(COFENSE_STATE_ENCRYPTION_ERR, exc)
             return action_result.set_status(phantom.APP_ERROR, COFENSE_STATE_ENCRYPTION_ERR)
 
         self._state[COFENSE_OAUTH_TOKEN_STRING] = {COFENSE_OAUTH_ACCESS_TOKEN_STRING: encrypted_token}
         self._state[COFENSE_STATE_IS_ENCRYPTED] = True
-        self.save_state(self._state)
+        if phantom.is_fail(self.save_state(self._state)):
+            self._clear_cached_oauth_token()
+            self.save_state(self._state)
+            return action_result.set_status(phantom.APP_ERROR, "Unable to save the encrypted OAuth access token")
+
+        self._access_token = access_token
 
         return phantom.APP_SUCCESS
+
+    def _clear_cached_oauth_token(self):
+        """Remove every persisted and in-memory representation of the OAuth access token."""
+        self._access_token = None
+        self._state.pop(COFENSE_OAUTH_TOKEN_STRING, None)
+        self._state.pop(COFENSE_STATE_IS_ENCRYPTED, None)
+
+    def _save_protected_state(self):
+        """Save state only when it contains ciphertext or no cached OAuth access token."""
+        if self._state.get(COFENSE_OAUTH_TOKEN_STRING) and not self._state.get(COFENSE_STATE_IS_ENCRYPTED):
+            self._clear_cached_oauth_token()
+
+        return self.save_state(self._state)
 
     def _handle_categorize_report(self, param):
         """
@@ -2426,19 +2443,25 @@ class CofenseTriageConnector(BaseConnector):
                     self._access_token = encryption_helper.decrypt(stored_token, self.get_asset_id())
                 except Exception as exc:
                     self.debug_print("Unable to decrypt the cached OAuth access token; requesting a new token", exc)
-                    self._state.pop(COFENSE_OAUTH_TOKEN_STRING, None)
-                    self._state.pop(COFENSE_STATE_IS_ENCRYPTED, None)
+                    self._clear_cached_oauth_token()
             else:
                 # Migrate legacy cleartext state immediately so subsequent state writes remain protected.
-                self._access_token = stored_token
                 try:
-                    encrypted_token = encryption_helper.encrypt(self._access_token, self.get_asset_id())
+                    encrypted_token = encryption_helper.encrypt(stored_token, self.get_asset_id())
                 except Exception as exc:
+                    self._clear_cached_oauth_token()
+                    scrub_ret_val = self.save_state(self._state)
                     self.debug_print(COFENSE_STATE_ENCRYPTION_ERR, exc)
+                    if phantom.is_fail(scrub_ret_val):
+                        self.debug_print("Unable to persist removal of the legacy cleartext OAuth access token")
                     return self.set_status(phantom.APP_ERROR, COFENSE_STATE_ENCRYPTION_ERR)
                 self._state[COFENSE_OAUTH_TOKEN_STRING] = {COFENSE_OAUTH_ACCESS_TOKEN_STRING: encrypted_token}
                 self._state[COFENSE_STATE_IS_ENCRYPTED] = True
-                self.save_state(self._state)
+                if phantom.is_fail(self.save_state(self._state)):
+                    self._clear_cached_oauth_token()
+                    self.save_state(self._state)
+                    return self.set_status(phantom.APP_ERROR, "Unable to save the encrypted OAuth access token")
+                self._access_token = stored_token
         self._verify = config.get("verify_server_cert", True)
 
         self.set_validator("email", self._validate_email)
@@ -2466,8 +2489,7 @@ class CofenseTriageConnector(BaseConnector):
         :return: status (success/failure)
         """
         # Save the state, this data is saved across actions and app upgrades
-        self.save_state(self._state)
-        return phantom.APP_SUCCESS
+        return self._save_protected_state()
 
 
 def main():
